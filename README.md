@@ -7,7 +7,7 @@ Who wins Broward County's Airbnb market, the professional operators or independe
 ```
 uv sync
 ```
-Then download `data/processed/` (7 .parquet files) from the shared Drive folder into this repo. Data files are not in GitHub because they are too large.
+Run `uv sync` again after every `git pull`: packages change (statsmodels and imbalanced-learn were added on October 29). Then download `data/processed/` (7 .parquet files) from the shared Drive folder into this repo. Data files are not in GitHub because they are too large.
 
 ## Layout
 
@@ -23,6 +23,8 @@ Then download `data/processed/` (7 .parquet files) from the shared Drive folder 
 | `docs/data_dictionary.md` | What every file and column means. **Read this first** |
 | `docs/decisions_log.md` | Every cleaning decision and why |
 | `archive/` | First EDA on the June summary file (Jason) |
+| `notebooks/figures/ch5/` | Figures saved by the Ch 5 notebook |
+| `notebooks/cache/` | Tuned models saved by notebooks so reruns are fast (not in GitHub) |
 
 ## Working rules
 

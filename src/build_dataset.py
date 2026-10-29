@@ -38,11 +38,16 @@ SHORELINE = [(25.957, -80.118), (26.010, -80.115), (26.050, -80.111), (26.085, -
              (26.120, -80.103), (26.160, -80.098), (26.190, -80.095), (26.230, -80.088),
              (26.270, -80.080), (26.320, -80.072)]
 
-WORLD_CUP_PATTERN = r"world\s*cup|fifa|mundial"
+WORLD_CUP_PATTERN = r"world\s*cup|fifa|mundial|\bwc\b"
 
-# One-word host names that are companies, checked by hand. Other one-word names
-# (David, Kevin...) are usually different people and are NOT merged.
-BRAND_NAMES = {"beachwalk", "roompicks", "lowkl", "designedvr", "atlantikos", "komffy"}
+# Company names checked by hand. Any host name containing one of these (as whole words) is
+# merged into that company, whatever its account size ("RoomPicks Accommodations",
+# "Ocean Manor ... By RoomPicks", "Lowkl One", "Stay Sol Six").
+BRANDS = ["stay sol", "beachwalk", "roompicks", "lowkl", "designedvr", "atlantikos", "komffy",
+          "evolve", "avantstay", "blueground", "vacasa", "sonder", "hollywood vacation rentals",
+          "palm wave stays"]
+# Words that mark a host name as a business rather than a person
+COMPANY_WORDS = r"\b(?:rentals?|vacations?|stays?|llc|inc|properties|property|homes|suites|hospitality|management|group|realty|resorts?|hotel|living|collection)\b"
 
 LISTING_COLS = [
     "id", "listing_url", "last_scraped", "name", "description", "neighborhood_overview",
@@ -93,6 +98,15 @@ def add_zip(df):
     g = gpd.GeoDataFrame(pts, geometry=gpd.points_from_xy(pts.longitude, pts.latitude), crs="EPSG:4326")
     j = gpd.sjoin(g, z.to_crs("EPSG:4326"), how="left", predicate="within")
     j = j.drop_duplicates(["id", "snapshot_date"])
+    # The Census file is clipped at the shoreline, so some beachfront points fall in the water:
+    # give those the nearest ZIP (all within a few hundred meters)
+    miss = j["zip"].isna()
+    if miss.any():
+        g2 = g.loc[j.index[miss]].to_crs("EPSG:3086")
+        near = gpd.sjoin_nearest(g2, z.to_crs("EPSG:3086")[["zip", "geometry"]], how="left",
+                                 max_distance=1000).drop_duplicates(["id", "snapshot_date"])
+        j.loc[near.index, "zip"] = near["zip_right"] if "zip_right" in near else near["zip"]
+        print("ZIP: nearest-ZIP fallback used for", int(miss.sum()), "rows")
     return df.merge(j[["id", "snapshot_date", "zip"]], on=["id", "snapshot_date"], how="left")
 
 
@@ -119,28 +133,36 @@ def build_listings():
     df["bathrooms"] = df["bathrooms"].fillna(bath_num)
     df["bath_shared"] = df["bathrooms_text"].str.contains("shared", case=False, na=False).astype(int)
     df["amenities_count"] = df["amenities"].apply(lambda s: len(json.loads(s)) if isinstance(s, str) else np.nan)
-    df["license_listed"] = df["license"].notna().astype(int)
+    # (license is filled for only 2 listings per snapshot, so no license flag is built)
 
-    # Host tiers (calculated_host_listings_count counts this account's listings in Broward)
-    df["host_tier"] = pd.cut(df["calculated_host_listings_count"], [0, 1, 9, np.inf],
-                             labels=["single", "small (2-9)", "pro (10+)"])
-    # Operators split across several accounts: merge accounts that share a normalized name
-    # when each account has 5+ listings and the name is a company (2+ words or a known brand)
-    df["operator_key"] = df["host_name"].map(operator_key)
-    mergeable = df["operator_key"].str.contains(" ") | df["operator_key"].isin(BRAND_NAMES)
-    df["operator_key"] = df["operator_key"].where(mergeable, "host_" + df["host_id"].astype(str))
-    acct = df.drop_duplicates(["snapshot_date", "host_id"])[
-        ["snapshot_date", "host_id", "operator_key", "calculated_host_listings_count"]]
-    big = acct[acct["calculated_host_listings_count"] >= 5]
-    op = big.groupby(["snapshot_date", "operator_key"]).agg(
-        operator_listings=("calculated_host_listings_count", "sum"),
+    # ---- Host tiers
+    # host_listings_count is Airbnb's count of ALL the account's listings (every market). It does
+    # not depend on how much of Broward a scrape reached, so the partial March scrape does not
+    # shrink it, and it catches national operators with few Broward units (Blueground, Evolve).
+    # It can still change between scrapes as a host adds or drops listings. A few rows report 0 or
+    # fewer listings than the account has in Broward alone, so take the larger of the two counts.
+    tiers = [0, 1, 9, np.inf]
+    tier_names = ["single", "small (2-9)", "pro (10+)"]
+    df["host_listings_count"] = df[["host_listings_count", "calculated_host_listings_count"]].max(axis=1)
+    df["host_tier"] = pd.cut(df["host_listings_count"], tiers, labels=tier_names)
+    # Broward-only count, kept for comparison (deflated in March because that scrape is partial)
+    df["broward_tier"] = pd.cut(df["calculated_host_listings_count"], tiers, labels=tier_names)
+    # Operators split across several accounts. A name containing a checked brand merges into that
+    # brand. Other names that look like companies merge when each account has 5+ listings.
+    # Person names (David, Maria Jose) are never merged.
+    key = df["host_name"].map(operator_key)
+    brand = pd.Series(None, index=df.index, dtype="object")
+    for b in BRANDS:
+        brand = brand.fillna(key.where(key.str.contains(rf"\b{b}\b", regex=True)).map(lambda _x, b=b: b, na_action="ignore"))
+    company = key.str.contains(COMPANY_WORDS, regex=True) & (df["host_listings_count"] >= 5)
+    df["operator_key"] = brand.fillna(key.where(company)).fillna("host_" + df["host_id"].astype(str))
+    acct = df.drop_duplicates(["snapshot_date", "host_id"])[["snapshot_date", "host_id", "operator_key",
+                                                             "host_listings_count"]]
+    op = acct.groupby(["snapshot_date", "operator_key"]).agg(
+        operator_listings=("host_listings_count", "sum"),
         operator_accounts=("host_id", "nunique")).reset_index()
     df = df.merge(op, on=["snapshot_date", "operator_key"], how="left")
-    df["operator_listings"] = df["operator_listings"].where(
-        df["calculated_host_listings_count"] >= 5, df["calculated_host_listings_count"])
-    df["operator_accounts"] = df["operator_accounts"].fillna(1).astype(int)
-    df["operator_tier"] = pd.cut(df["operator_listings"], [0, 1, 9, np.inf],
-                                 labels=["single", "small (2-9)", "pro (10+)"])
+    df["operator_tier"] = pd.cut(df["operator_listings"], tiers, labels=tier_names)
 
     # Location features
     df["mi_to_stadium"] = miles(df.latitude, df.longitude, *STADIUM)
@@ -157,6 +179,10 @@ def build_listings():
     df["stadium_band"] = pd.cut(df["mi_to_stadium"], [0, 10, 15, 20, np.inf],
                                 labels=["0-10 mi", "10-15 mi", "15-20 mi", "20+ mi"])
     df = add_zip(df)
+    oceanfront = df["name"].str.contains("oceanfront|beachfront|ocean front|beach front", case=False, na=False)
+    print("beach distance check, oceanfront/beachfront titles: median",
+          round(df.loc[oceanfront, "mi_to_beach_approx"].median(), 2), "mi; within 0.2 mi:",
+          f"{(df.loc[oceanfront, 'mi_to_beach_approx'] <= 0.2).mean():.0%}")
 
     # Flags
     # World Cup marketing: explicit terms, or "soccer" together with "stadium"
@@ -170,6 +196,9 @@ def build_listings():
     # First review within the year before the snapshot
     df["first_year_listing"] = (df["first_review"] >= df["snapshot_date"] - pd.Timedelta(days=365)).astype(int)
     df["no_reviews_yet"] = (df["number_of_reviews"] == 0).astype(int)
+    df["listing_age_group"] = np.select(
+        [df["no_reviews_yet"] == 1, df["first_year_listing"] == 1],
+        ["no reviews yet", "first year"], "established (1+ year)")
     # First scrape the listing shows up in: a no-review listing first seen in Dec 2025 has sat idle,
     # one first seen in Jun or Sep 2026 is likely brand new
     df["first_seen_snapshot"] = df.groupby("id")["snapshot_date"].transform("min")
@@ -179,20 +208,22 @@ def build_listings():
     df["in_panel"] = df["id"].map(full).astype(int)
 
     # Performance targets
-    # Placeholder or typo prices: under $25, over $10,000, or over $3,000 with no estimated bookings
-    df["price_outlier"] = (df["price"].notna() & (
-        (df["price"] < 25) | (df["price"] > 10000)
-        | ((df["price"] > 3000) & (df["estimated_occupancy_l365d"] == 0)))).astype(int)
-    df["revenue_per_bedroom"] = df["estimated_revenue_l365d"] / df["bedrooms"].clip(lower=1)
+    # Inside Airbnb's estimate (checked against the data): occupancy nights =
+    #   min(255, 2 x reviews in the last 12 months x max(minimum_nights, 3)), and
+    #   revenue = price on the scrape day x occupancy nights.
+    df["zero_occupancy"] = (df["estimated_occupancy_l365d"] == 0).astype(int)
+    df["occupancy_capped"] = (df["estimated_occupancy_l365d"] >= 255).astype(int)
     df["occupancy_rate_l365d"] = df["estimated_occupancy_l365d"] / 365
+    # (price flags are built after bedrooms are filled, below)
 
     # ---- Missing values
     # Columns Inside Airbnb left empty in every snapshot (host_since, response and acceptance rates)
     empty = [c for c in df.columns if df[c].isna().all()]
     df = df.drop(columns=empty)
     print("dropped empty columns:", empty)
-    # Small, random gaps: fill, and record which cells were filled.
-    # First choice: the same listing's value from its nearest other snapshot (rooms rarely change)
+    # Fill bedrooms, beds, bathrooms and record which cells were filled.
+    # First choice: the same listing's value from its nearest other snapshot (rooms rarely change).
+    # Note: June 2026 is missing bedrooms for 13.6% of listings, so this is not a small gap there.
     df["bedrooms_was_filled"] = df["bedrooms"].isna().astype(int)
     df["beds_was_filled"] = df["beds"].isna().astype(int)
     df["bathrooms_was_filled"] = df["bathrooms"].isna().astype(int)
@@ -200,7 +231,13 @@ def build_listings():
     for c in ["bedrooms", "beds", "bathrooms"]:
         df[c] = df.groupby("id")[c].transform(lambda x: x.ffill().bfill())
     # Fallbacks when the listing never reported it
-    df["bedrooms"] = df["bedrooms"].fillna(np.ceil(df["accommodates"] / 2))       # about 2 guests per bedroom
+    # Fallback: rooms (private, shared, hotel) = 1; entire places called "studio" = 0;
+    # other entire places = about 2 guests per bedroom
+    is_room = df["room_type"].isin(["Private room", "Shared room", "Hotel room"])
+    is_studio = df["name"].str.contains(r"\bstudio\b", case=False, na=False)
+    rule = np.where(is_room, 1, np.where(is_studio, 0, np.ceil(df["accommodates"] / 2)))
+    df["bedrooms"] = df["bedrooms"].fillna(pd.Series(rule, index=df.index))
+    print("bedrooms filled:", int(df["bedrooms_was_filled"].sum()))
     df["beds"] = df["beds"].fillna(df["bedrooms"].clip(lower=1))
     df["revenue_per_bedroom"] = df["estimated_revenue_l365d"] / df["bedrooms"].clip(lower=1)
     typical_bath = df.groupby(["snapshot_date", "bedrooms"])["bathrooms"].transform("median")
@@ -208,9 +245,40 @@ def build_listings():
     # Gaps that carry meaning are NOT filled: no review score = no reviews (see no_reviews_yet),
     # no price = not open for booking when scraped
     df["bookable"] = df["price"].notna().astype(int)
-    # Shared starting sample for market and performance analysis
+
+    # ---- Price flags
+    # price_implausible: under $25, over $10,000, over $3,000 with no estimated bookings, or over
+    # $2,000 a night per bedroom (studios count as 1 bedroom).
+    # price_spike: one scrape's price far from the same listing's other prices. With 3+ prices,
+    # more than 3x (or under 1/3) of the median of all its prices, so one wild price cannot drag
+    # the reference. With 2 prices we cannot tell which is wrong, so only a jump UP to over $1,000
+    # and 3x the other price is flagged. Some spikes are real event pricing (June 2026), so the
+    # flag is kept on its own: the World Cup chapter checks its price results with spikes included.
+    # price_outlier = either one. Revenue = scrape-day price x nights, so both would distort revenue.
+    g = df.groupby("id")["price"]
+    n_prices = g.transform("count")
+    own_median = g.transform("median")
+    other_price = g.transform("sum") - df["price"]          # the other price when there are exactly 2
+    spike = (((n_prices >= 3) & ((df["price"] > 3 * own_median) | (df["price"] < own_median / 3)))
+             | ((n_prices == 2) & (df["price"] > 3 * other_price) & (df["price"] > 1000)))
+    implausible = ((df["price"] < 25) | (df["price"] > 10000)
+                   | ((df["price"] > 3000) & (df["estimated_occupancy_l365d"] == 0))
+                   | (df["price"] / df["bedrooms"].clip(lower=1) > 2000))
+    df["price_spike"] = (df["price"].notna() & spike).astype(int)
+    df["price_implausible"] = (df["price"].notna() & implausible).astype(int)
+    df["price_outlier"] = ((df["price_spike"] == 1) | (df["price_implausible"] == 1)).astype(int)
+    print("price outliers by snapshot:", df.groupby("snapshot_date")["price_outlier"].sum().to_dict(),
+          "| spikes:", int(df["price_spike"].sum()), "| implausible:", int(df["price_implausible"].sum()),
+          "| both:", int(((df["price_spike"] == 1) & (df["price_implausible"] == 1)).sum()))
+    print("June spikes up vs down:", int(((df["price_spike"] == 1) & (df["price"] > own_median)
+                                          & (df["snapshot_date"] == pd.Timestamp("2026-06-29"))).sum()),
+          "/", int(((df["price_spike"] == 1) & (df["price"] < own_median)
+                    & (df["snapshot_date"] == pd.Timestamp("2026-06-29"))).sum()))
+    # Shared starting sample for market and performance analysis: open for booking (so never in
+    # Dec 2025, which has no prices), believable price, short-term (under 30 night minimum).
+    # Zero-occupancy and capped listings are included; filter them yourself if needed.
     df["analysis_ready"] = ((df["bookable"] == 1) & (df["price_outlier"] == 0)
-                            & (df["mid_term"] == 0) & df["bedrooms"].notna()).astype(int)
+                            & (df["mid_term"] == 0)).astype(int)
 
     df = df.sort_values(["snapshot_date", "id"]).reset_index(drop=True)
     df = df.rename(columns={"neighbourhood_cleansed": "city"})
@@ -224,10 +292,12 @@ def build_listings():
 # ---------------------------------------------------------------- reviews
 STOP = {
     "en": {"the", "and", "was", "is", "very", "great", "we", "place", "stay", "to", "it", "with",
-           "i", "my", "you", "had", "would", "good", "nice", "time", "so", "of", "for", "this", "again"},
+           "i", "my", "you", "had", "would", "good", "nice", "time", "so", "of", "for", "this", "again",
+           "no", "problems", "smooth", "check", "in", "recommended", "clean", "host", "location", "loved"},
     "es": {"el", "la", "muy", "y", "es", "lugar", "excelente", "todo", "con", "para", "los", "estuvo"},
     "pt": {"o", "e", "muito", "lugar", "com", "para", "não", "ótimo", "bem", "uma", "estadia", "tudo"},
-    "fr": {"le", "et", "très", "est", "nous", "avons", "les", "des", "séjour", "était", "pour", "bien"},
+    "fr": {"le", "et", "très", "est", "nous", "avons", "les", "des", "séjour", "était", "pour", "bien",
+           "parfait", "magnifique", "logement", "merci", "avec", "une", "un", "à", "au"},
     "de": {"und", "die", "der", "sehr", "war", "ist", "wir", "mit", "ein", "eine", "alles", "nicht"},
 }
 
@@ -240,34 +310,45 @@ def guess_language(text):
         return "other"   # mostly non-Latin script (Arabic, Russian, Chinese, ...)
     words = set(re.findall(r"[a-zà-ÿ]+", text.lower()))
     scores = {lang: len(words & s) for lang, s in STOP.items()}
-    best = max(scores, key=scores.get)
-    return best if scores[best] > 0 else "unknown"
+    top = max(scores.values())
+    winners = [lang for lang, v in scores.items() if v == top]
+    return winners[0] if top > 0 and len(winners) == 1 else "unknown"   # ties are "unknown"
 
 
 def build_reviews():
     snaps = list(SNAPSHOTS.items())[::-1]   # newest first, so the latest copy of each review is kept
-    parts, seen_ids = [], set()
+    # Each scrape's file repeats every older review, so the same review appears up to 4 times.
+    # Keep one copy of each review id: the newest snapshot's. Airbnb also copies reviews to a new
+    # listing id when a host relists a property, so one review id can sit under two listings;
+    # the newest copy wins there too.
+    parts, seen_ids, pairs, raw_rows = [], set(), [], 0
     for snap, folder in snaps:
         for chunk in pd.read_csv(RAW / folder / "reviews.csv.gz", chunksize=200_000):
+            raw_rows += len(chunk)
+            pairs.append(chunk[["id", "listing_id"]].drop_duplicates())
             chunk = chunk[~chunk["id"].isin(seen_ids)]
+            chunk = chunk.drop_duplicates("id", keep="first")
             seen_ids.update(chunk["id"].tolist())
             parts.append(chunk)
     r = pd.concat(parts, ignore_index=True).rename(columns={"id": "review_id"})
-    # Airbnb copies reviews over when a host relists a property under a new listing id, so the
-    # same review can sit under two listings. Keep one copy (the newest snapshot's).
-    r = r.drop_duplicates("review_id", keep="first")
+    pairs = pd.concat(pairs).drop_duplicates()
+    moved = pairs.groupby("id")["listing_id"].nunique()
+    print(f"review rows in all files: {raw_rows:,}; kept once: {len(r):,}; "
+          f"review ids found under 2+ listing ids (relisted properties): {int((moved >= 2).sum()):,}")
     r["date"] = pd.to_datetime(r["date"])
     r["comments"] = r["comments"].fillna("").str.replace(r"<br\s*/?>|[\r\n]+", " ", regex=True).str.strip()
     r["is_automated"] = r["comments"].str.contains("automated posting|canceled this reservation", case=False, na=False).astype(int)
     r["word_count"] = r["comments"].str.split().str.len()
     r["language"] = r["comments"].map(guess_language)
 
-    # Listing attributes from the latest snapshot each listing appears in
+    # Listing attributes from the latest COMPLETE snapshot the listing appears in (March only if
+    # the listing appears nowhere else)
     lp = pd.read_parquet(OUT / "listings_panel.parquet",
                          columns=["id", "snapshot_date", "city", "zip", "room_type", "host_tier",
                                   "operator_tier", "world_cup_title_ever", "stadium_band",
                                   "mi_to_beach_approx", "host_is_superhost"])
-    lp = lp.sort_values("snapshot_date").drop_duplicates("id", keep="last").drop(columns="snapshot_date")
+    lp["rank"] = lp["snapshot_date"].map(lambda d: -1 if d == pd.Timestamp("2026-03-30") else d.value)
+    lp = lp.sort_values("rank").drop_duplicates("id", keep="last").drop(columns=["snapshot_date", "rank"])
     r = r.merge(lp.rename(columns={"id": "listing_id"}), on="listing_id", how="left")
     r = r.drop(columns=["reviewer_name"])
     r.to_parquet(OUT / "reviews.parquet", index=False)
@@ -284,7 +365,7 @@ WORLD_CUP_MATCHES = ["2026-06-15", "2026-06-21", "2026-06-24", "2026-06-27",
 
 
 def build_calendar():
-    """Monthly availability per listing per snapshot, plus daily rows for Jun to Jul 2026 from the Dec, Mar and Jun scrapes."""
+    """Monthly availability per listing per snapshot, plus daily rows for nights Jun 1 to Sep 30 2026 from the Dec, Mar and Jun scrapes."""
     monthly, window = [], []
     for snap, folder in SNAPSHOTS.items():
         c = pd.read_csv(RAW / folder / "calendar.csv.gz",
@@ -296,18 +377,25 @@ def build_calendar():
             min_nights_avg=("minimum_nights", "mean")).reset_index()
         m.insert(0, "snapshot_date", pd.Timestamp(snap))
         monthly.append(m)
-        # The World Cup window (Jun 1 to Jul 31, 2026) as each earlier scrape saw it. Comparing
-        # the same night across scrapes shows nights that went from open to taken.
+        # Nights Jun 1 to Sep 30, 2026 as each earlier scrape saw them. Comparing the same night
+        # across scrapes shows nights that went from open to taken. August and September nights are
+        # further ahead than tournament nights in every scrape, so they are NOT a same-lead-time
+        # control; compare near vs far listings on the same nights instead. scraped_on is the
+        # first night in the listing's calendar (usually its scrape day; for some March listings
+        # 1 to 3 days before last_scraped). The June scrape ran Jun 29 to Jul 3.
         if snap in ("2025-12-28", "2026-03-30", "2026-06-29"):
-            w = c[c["date"].between("2026-06-01", "2026-07-31")].copy()
+            first_day = c.groupby("listing_id")["date"].transform("min")
+            w = c[c["date"].between("2026-06-01", "2026-09-30")].copy()
             w.insert(0, "snapshot_date", pd.Timestamp(snap))
-            w["match_day"] = w["date"].isin(WORLD_CUP_MATCHES).astype(int)
+            w["scraped_on"] = pd.to_datetime(first_day.loc[w.index])
+            w["match_day"] = w["date"].isin(WORLD_CUP_MATCHES).astype("int8")
             window.append(w.drop(columns=["available", "month"]))
     m = pd.concat(monthly, ignore_index=True)
     m["unavailable_share"] = m["unavailable_days"] / m["days"]
     m.to_parquet(OUT / "calendar_monthly.parquet", index=False)
     w = pd.concat(window, ignore_index=True)
     w["date"] = pd.to_datetime(w["date"])
+    w["days_ahead"] = (w["date"] - w["scraped_on"]).dt.days.astype("int16")
     w.to_parquet(OUT / "calendar_worldcup_window.parquet", index=False)
     print(f"calendar_monthly: {len(m):,} rows | calendar_worldcup_window: {len(w):,} rows")
 
@@ -368,7 +456,14 @@ def build_external():
     s = s[s["MULTI_PAR_SAL"].isna()].drop(columns=["MULTI_PAR_SAL", "PHY_ZIPCD"])
     # Sales under $100K are mostly condos in 55+ communities (Deerfield Beach, Sunrise, Lauderhill,
     # Margate) that ban short-term rentals, plus a few single-family data errors. Not relevant here.
+    # Judgment call: $100K to $150K condo sales in the same cities remain (about 2,700).
+    print("DOR sales removed by the $100K cutoff:", int((s["SALE_PRC"] < 100_000).sum()))
     s = s[s["SALE_PRC"] >= 100_000]
+    # ZIPs that have at least 10 short-term listings in the Sep 2026 scrape
+    lp = pd.read_parquet(OUT / "listings_panel.parquet", columns=["snapshot_date", "zip", "mid_term"])
+    lp = lp[(lp["snapshot_date"] == pd.Timestamp("2026-09-22")) & (lp["mid_term"] == 0)]
+    str_zips = set(lp["zip"].value_counts().loc[lambda v: v >= 10].index)
+    s["str_zip"] = s["zip"].isin(str_zips).astype(int)
     s.columns = [c.lower() for c in s.columns]
     s.to_parquet(OUT / "dor_sales.parquet", index=False)
     print(f"dor_sales: {len(s):,} arm's-length sales, {s['sale_month'].min().date()} to {s['sale_month'].max().date()}")

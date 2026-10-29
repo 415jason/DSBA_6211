@@ -12,4 +12,6 @@ dependencies = [
     "geopandas>=1.1.0",
     "scikit-learn>=1.7.0",
     "ipykernel>=6.29.0",
+    "statsmodels>=0.15.0",
+    "imbalanced-learn>=0.14.2",
 ]
