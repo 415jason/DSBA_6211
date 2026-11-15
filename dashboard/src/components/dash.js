@@ -81,7 +81,12 @@ export function mask(D, F, snap) {
     if (prop && !prop.has(st.prop.codes[i])) continue;
     if (beach && !beach.has(st.beach.codes[i])) continue;
     if (host && !host.has(hostArr[i])) continue;
-    if (F.price < 1000) { const p = priceArr[i]; if (p == null || p < 0 || p > F.price) continue; }
+    if (F.price < 1000) {
+      // A scrape without a price for this listing (all of December) falls back to its latest known price.
+      let p = priceArr[i];
+      if (p == null || p < 0) p = D.price[i];
+      if (p == null || p < 0 || p > F.price) continue;
+    }
     k[i] = 1;
   }
   return k;
@@ -191,7 +196,8 @@ export function snapRows(D, keep, snap) {
 
 // Headline numbers for a set of rows (estimates use active, analysis-ready listings).
 export function summarize(rows) {
-  const ready = rows.filter((r) => r.ready), act = ready.filter((r) => r.active);
+  // The standard sample needs a price; December has none, so there every short-term listing counts.
+  const ready = rows.some((r) => r.ready) ? rows.filter((r) => r.ready) : rows, act = ready.filter((r) => r.active);
   return {
     listings: rows.length,
     pro: rows.length ? rows.filter((r) => r.host === 2).length / rows.length : NaN,
@@ -205,4 +211,21 @@ export function summarize(rows) {
 
 export function kpiCard(html, title, big, sub = "", cls = "") {
   return html`<div class="card kpi"><h2>${title}</h2><div class="big ${cls}">${big}</div><div class="sub">${sub}</div></div>`;
+}
+
+// Shown instead of empty charts when the filters match nothing.
+export function emptyNote(html, n) {
+  return n ? html`<span></span>` : html`<div class="empty-note"><b>No listings match these filters.</b> Clear a filter or two above to see results.</div>`;
+}
+
+// Busiest and quietest cities for a per-listing measure (min 30 listings).
+export function cityRank(D, keep, num, den) {
+  const m = new Map();
+  for (let i = 0; i < D.n; i++) {
+    if (!keep[i] || !den[i]) continue;
+    const c = D.static.city.labels[D.static.city.codes[i]];
+    const e = m.get(c) ?? {city: c, num: 0, den: 0, n: 0};
+    e.num += num[i]; e.den += den[i]; e.n += 1; m.set(c, e);
+  }
+  return [...m.values()].filter((e) => e.n >= 30).map((e) => ({...e, rate: e.num / e.den})).sort((a, b) => b.rate - a.rate);
 }

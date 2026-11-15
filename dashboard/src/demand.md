@@ -5,7 +5,7 @@ title: Demand map
 ```js
 import {Plot, Inputs, html} from "./components/libs.js";
 import {ColumnLayer} from "./components/mapstack.js";
-import {bytes, filterPanel, filterSummary, mask, createMap, contextLayers, binCells, rampColor,
+import {bytes, filterPanel, filterSummary, mask, createMap, contextLayers, binCells, rampColor, cityRank, emptyNote,
   monthName, fmtInt, fmtPct, SNAP_LABEL, ACCENT} from "./components/dash.js";
 const D = await FileAttachment("data/listings.json").json();
 const REV = await FileAttachment("data/reviews.json").json();
@@ -117,16 +117,30 @@ const heightScale = measure === "Reviews" ? 14 : 2500 / maxShown;
 ```js
 const card = (title, big, sub, cls = "") => html`<div class="card kpi"><h2>${title}</h2><div class="big ${cls}">${big}</div><div class="sub">${sub}</div></div>`;
 const yoyTxt = !isCal && kpi.yoy != null ? (kpi.yoy >= 0 ? "+" : "") + (kpi.yoy * 100).toFixed(0) + "%" : "n/a";
+// City ranking for this month: reviews per active listing, or share of nights taken.
+const ranks = (() => {
+  if (isCal) {
+    const C = CAL[calSnap], taken = bytes(C.taken[month]), days = C.days[C.months.indexOf(month)];
+    const num = new Float32Array(D.n), den = new Float32Array(D.n);
+    for (let i = 0; i < D.n; i++) if (taken[i] !== 255) { num[i] = taken[i]; den[i] = days; }
+    return cityRank(D, keep, num, den);
+  }
+  const den = new Float32Array(D.n); for (let i = 0; i < D.n; i++) den[i] = values[i] ? 1 : 0;
+  return cityRank(D, keep, values, den);
+})();
+const top = ranks[0], low = ranks.at(-1);
+const rankTxt = (e) => (e ? (isCal ? fmtPct(e.rate) + " of nights" : e.rate.toFixed(2) + " reviews per listing") : "fewer than 30 listings per city");
+display(emptyNote(html, isCal ? kpi.listings : kpi.active));
 display(html`<div class="kpis">${isCal ? [
   card(`Nights taken in ${monthName(month)}`, fmtPct(kpi.share), `booked or blocked, as of ${SNAP_LABEL[calSnap]}`),
   card("Listings counted", fmtInt(kpi.listings), "with that month on their calendar"),
-  card("Busiest hexagon", fmtPct(Math.max(0, ...cells.map((c) => c.shown))), "share of nights taken"),
-  card("Hexagons shown", fmtInt(cells.length), "3+ listings each")
+  card("Fullest city", top?.city ?? "n/a", rankTxt(top), "small"),
+  card("Quietest city", low && low !== top ? low.city : "n/a", rankTxt(low !== top ? low : null), "small")
 ] : [
   card(`Reviews in ${monthName(month)}`, fmtInt(kpi.main), "a stand-in for stays"),
   card("Listings reviewed", fmtInt(kpi.active), `${kpi.perActive.toFixed(2)} reviews each`),
   card("Same month last year", yoyTxt, "change in reviews", kpi.yoy == null ? "" : kpi.yoy >= 0 ? "up" : "down"),
-  card("Hexagons with demand", fmtInt(cells.length), "about 400 m across")
+  card("Most reviews per listing", top?.city ?? "n/a", rankTxt(top), "small")
 ]}</div>`);
 ```
 

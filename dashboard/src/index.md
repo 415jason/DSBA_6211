@@ -5,7 +5,7 @@ title: Overview
 ```js
 import {Plot, Inputs, html} from "./components/libs.js";
 import {ColumnLayer} from "./components/mapstack.js";
-import {bytes, filterPanel, filterSummary, mask, snapRows, summarize, kpiCard, createMap, contextLayers, binCells,
+import {bytes, filterPanel, filterSummary, mask, snapRows, summarize, kpiCard, emptyNote, createMap, contextLayers, binCells,
   fmtInt, fmtPct, fmtMoney, SNAP_LABEL, HOST_LABEL, HOST_COLOR, ACCENT} from "./components/dash.js";
 const D = await FileAttachment("data/listings.json").json();
 const REV = await FileAttachment("data/reviews.json").json();
@@ -46,13 +46,14 @@ const monthly = REV.months.filter((m) => m >= "2024-01").map((m) => {
 ```
 
 ```js
+display(emptyNote(html, s.listings));
 display(html`<div class="kpis">
   ${kpiCard(html, "Listings", fmtInt(s.listings), SNAP_LABEL[snap])}
   ${kpiCard(html, "Run by pros (10+ listings)", fmtPct(s.pro), "share of listings")}
   ${kpiCard(html, "Active", fmtPct(s.active), "reviewed in the last 12 months")}
   ${kpiCard(html, "Median nightly price", fmtMoney(s.price), snap === "2025-12-28" ? "December has no prices" : "standard sample")}
-  ${kpiCard(html, "Median booked nights", isNaN(s.nights) ? "n/a" : fmtInt(s.nights), "estimated, active listings")}
-  ${kpiCard(html, "Median yearly revenue", fmtMoney(s.revenue), "estimated, active listings")}
+  ${kpiCard(html, "Median booked nights", isNaN(s.nights) ? "n/a" : fmtInt(s.nights), snap === "2025-12-28" ? "estimated, active short-term listings" : "estimated, active listings")}
+  ${kpiCard(html, "Median yearly revenue", fmtMoney(s.revenue), snap === "2025-12-28" ? "needs a price; December has none" : "estimated, active listings")}
 </div>`);
 ```
 

@@ -43,7 +43,10 @@ const active = REV.months.filter((m) => m >= "2024-01").map((m) => {
 // Entered and left, December to September. Host type from the latest of the two scrapes.
 const flow = (() => {
   const dec = bytes(D.snap["2025-12-28"].present), sep = bytes(D.snap["2026-09-22"].present);
-  const kd = mask(D, F, "2025-12-28"), ks = mask(D, F, "2026-09-22");
+  // December has no prices, so the price filter would drop listings that left before they ever
+  // showed one. The flow ignores the price filter to keep the comparison fair.
+  const F2 = {...F, price: 1000};
+  const kd = mask(D, F2, "2025-12-28"), ks = mask(D, F2, "2026-09-22");
   const out = HOST_LABEL.map((h) => ({host: h, dec: 0, sep: 0, left: 0, entered: 0}));
   const tot = {host: "All", dec: 0, sep: 0, left: 0, entered: 0};
   for (let i = 0; i < D.n; i++) {
@@ -92,7 +95,7 @@ display(html`<div class="kpis">
     <thead><tr><th>Host type</th><th>Dec 2025</th><th>Left</th><th>Entered</th><th>Sep 2026</th><th>Exit rate</th><th>Net change</th></tr></thead>
     <tbody>${flow.map((r) => html`<tr style=${r.host === "All" ? "font-weight:600" : ""}><td>${r.host}</td><td>${fmtInt(r.dec)}</td><td>${fmtInt(r.left)}</td><td>${fmtInt(r.entered)}</td><td>${fmtInt(r.sep)}</td><td>${fmtPct(r.left / r.dec)}</td><td>${(r.sep - r.dec >= 0 ? "+" : "") + fmtInt(r.sep - r.dec)}</td></tr>`)}</tbody>
   </table>`}</div>
-  <p class="foot">A listing counts under its host type in its latest scrape. "Left" means in December but not in September; a relisted property counts as left, so this is an upper bound.</p>
+  <p class="foot">A listing counts under its host type in its latest scrape. "Left" means in December but not in September; a relisted property counts as left, so this is an upper bound.${F.price < 1000 ? " The price filter is not applied here: December has no prices, so it would hide listings that left early." : ""}</p>
 </div>
 
 ```js
