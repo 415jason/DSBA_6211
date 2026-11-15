@@ -48,7 +48,7 @@ const idx = [seasonIndex("All matching listings", () => true), ...compare.map((c
 <div class="card">${resize((width) => Plot.plot({
   width, height: 360, marginLeft: 50,
   title: "Seasonal index of reviews, 2023 to 2025 average (100 = an average month)",
-  color: {legend: true, range: [ACCENT, "#3FB8A8", "#7AA6D6", "#E9C46A", "#FF8CBE", "#B2A0FF", "#9FB0C0"]},
+  color: {legend: true, range: ["#F2F5F8", "#FF9F5A", "#4C7DFF", "#3FD0A8", "#FF6FB5", "#FFE08A"]},
   x: {domain: MONTHS, label: null}, y: {grid: true, label: "Index", domain: [50, 150]},
   marks: [
     Plot.rectY([{}], {x1: "Jun", x2: "Nov", y1: 50, y2: 150, fill: "#60D2FF", fillOpacity: 0.05}),
@@ -91,6 +91,6 @@ const beachTable = bands.map((b) => ({band: b, ...summarize(rows.filter((r) => r
     width, height: 280, marginLeft: 50,
     title: "Share run by pros by distance to the beach",
     x: {domain: bands, label: null}, y: {grid: true, label: null, tickFormat: "%", domain: [0, 1]},
-    marks: [Plot.barY(beachTable, {x: "band", y: "pro", fill: "#7AA6D6", tip: true}), Plot.ruleY([0])]
+    marks: [Plot.barY(beachTable, {x: "band", y: "pro", fill: "#4C7DFF", tip: true}), Plot.ruleY([0])]
   }))}</div>
 </div>

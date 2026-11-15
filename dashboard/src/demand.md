@@ -154,7 +154,7 @@ M.set([
 ```
 
 ```js
-M.map.easeTo({pitch: view3d ? 55 : 0, bearing: view3d ? -20 : 0, duration: 900});
+M.map.easeTo(view3d ? {pitch: 55, bearing: -20, zoom: 10.3, center: [-80.16, 26.08], duration: 1000} : {pitch: 0, bearing: 0, zoom: 9.85, center: [-80.2, 26.14], duration: 1000});
 ```
 
 <div class="grid grid-cols-3">

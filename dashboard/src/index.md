@@ -89,7 +89,7 @@ function d3group(rows) {
     title: `Listings by city and host type, ${SNAP_LABEL[snap]}`,
     color: {domain: HOST_LABEL, range: HOST_COLOR, legend: true},
     x: {grid: true, label: "Listings"}, y: {label: null},
-    marks: [Plot.barX(byCity, {y: "city", x: "n", fill: "host", sort: {y: "-x", reduce: "sum"}, tip: true})]
+    marks: [Plot.barX(byCity, {y: "city", x: "n", fill: "host", order: HOST_LABEL, sort: {y: "-x", reduce: "sum"}, tip: true})]
   }))}</div>
 </div>
 

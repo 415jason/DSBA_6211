@@ -72,7 +72,7 @@ display(html`<div class="kpis">
     title: "Listings per scrape by host type (March reached only about 55%)",
     color: {domain: HOST_LABEL, range: HOST_COLOR, legend: true},
     x: {domain: Object.values(SNAP_LABEL), label: null}, y: {grid: true, label: "Listings"},
-    marks: [Plot.barY(perSnap, {x: "snap", y: "n", fill: "host", tip: true}), Plot.ruleY([0])]
+    marks: [Plot.barY(perSnap, {x: "snap", y: "n", fill: "host", order: HOST_LABEL, tip: true}), Plot.ruleY([0])]
   }))}</div>
   <div class="card">${resize((width) => Plot.plot({
     width, height: 320, marginLeft: 50,
@@ -115,7 +115,7 @@ const cells = (() => {
   }
   return [...m.values()].map((c) => ({...c, share: c.pro / c.n, tip: `${c.n} listings, ${fmtPct(c.pro / c.n)} run by pros`}));
 })();
-const colorShare = (s) => { const a = [63, 184, 168], b = [240, 138, 75]; return a.map((v, j) => Math.round(v + (b[j] - v) * s)).concat(225); };
+const colorShare = (s) => { const a = [255, 159, 90], b = [76, 125, 255]; return a.map((v, j) => Math.round(v + (b[j] - v) * s)).concat(225); };
 M.set([...contextLayers(zips, LM, {showLandmarks: false}),
   new ColumnLayer({id: "pros", data: cells, diskResolution: 6, radius: 200, extruded: false, getPosition: (d) => [d.lon, d.lat],
     getFillColor: (d) => colorShare(d.share), pickable: true, updateTriggers: {getFillColor: snap}}),
@@ -127,7 +127,7 @@ M.set([...contextLayers(zips, LM, {showLandmarks: false}),
   <div class="card">
     <h2 style="margin-top:0">Where the pros are</h2>
     <p>Each hexagon is colored by the share of its listings run by hosts with 10 or more listings.</p>
-    <div class="legend"><span style="--c:#3FB8A8">Mostly independent</span><span style="--c:#F08A4B">Mostly pros</span></div>
+    <div class="legend"><span style="--c:#FF9F5A">Mostly independent</span><span style="--c:#4C7DFF">Mostly pros</span></div>
     <p class="foot" style="margin-top:1rem">Pros cluster in the beachfront condo towers, above all along the Hallandale Beach and South Hollywood strip. Inland neighborhoods are mostly independent and small hosts.</p>
   </div>
 </div>

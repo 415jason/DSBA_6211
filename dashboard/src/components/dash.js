@@ -8,7 +8,8 @@ export const SNAP_LABEL = {
   "2026-06-29": "Jun 2026", "2026-09-22": "Sep 2026"
 };
 export const HOST_LABEL = ["Single (1 listing)", "Small (2 to 9)", "Pro (10+)"];
-export const HOST_COLOR = ["#3FB8A8", "#E9C46A", "#7AA6D6"];
+// Independents warm, pros cool: different hue and lightness so they read apart.
+export const HOST_COLOR = ["#FF9F5A", "#FFE08A", "#4C7DFF"];
 export const ACCENT = "#F08A4B";
 
 export function bytes(b64) {
@@ -45,7 +46,7 @@ export function filterPanel(D) {
     prop: Inputs.checkbox(["Condo or apartment", "House or townhouse", "Hotel or resort"], {label: "Property", value: pick(st.prop.labels, s.prop)}),
     host: Inputs.checkbox(HOST_LABEL, {label: "Host type", value: pick(HOST_LABEL, s.host)}),
     beach: Inputs.checkbox(st.beach.labels.filter((b) => b !== "Unknown"), {label: "To beach", value: pick(st.beach.labels, s.beach)}),
-    price: Inputs.range([50, 1000], {label: "Max $/night", step: 25, value: s.price ?? 1000})
+    price: Inputs.range([50, 1000], {label: "Max price", step: 25, value: s.price ?? 1000})
   });
   form.classList.add("filters");
   form.addEventListener("input", () => { try { localStorage.setItem(KEY, JSON.stringify(form.value)); } catch {} });
@@ -55,7 +56,10 @@ export function filterPanel(D) {
   }});
   const wrap = document.createElement("div");
   wrap.className = "filter-wrap";
-  wrap.append(form, reset);
+  const head = document.createElement("div");
+  head.className = "filter-head";
+  head.innerHTML = "<h2>Filters</h2><span class='foot'>Leave a group empty to include everything. Filters carry over to every page.</span>";
+  wrap.append(head, form, reset);
   wrap.value = form.value;
   form.addEventListener("input", () => { wrap.value = form.value; wrap.dispatchEvent(new Event("input")); });
   return wrap;
