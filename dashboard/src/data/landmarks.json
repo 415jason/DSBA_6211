@@ -1,0 +1,131 @@
+{
+ "note": "Approximate coordinates from public map sources (OpenStreetMap). Places that draw guests in our story.",
+ "places": [
+  {
+   "name": "Hard Rock Stadium",
+   "kind": "Event",
+   "lat": 25.958,
+   "lon": -80.2389,
+   "side": "left"
+  },
+  {
+   "name": "FLL Airport",
+   "kind": "Travel",
+   "lat": 26.0726,
+   "lon": -80.1527,
+   "side": "left"
+  },
+  {
+   "name": "Port Everglades (cruises)",
+   "kind": "Travel",
+   "lat": 26.091,
+   "lon": -80.1196,
+   "side": "right"
+  },
+  {
+   "name": "Convention Center",
+   "kind": "Event",
+   "lat": 26.0995,
+   "lon": -80.1215,
+   "side": "left"
+  },
+  {
+   "name": "Fort Lauderdale Beach",
+   "kind": "Beach",
+   "lat": 26.1188,
+   "lon": -80.1036,
+   "side": "right"
+  },
+  {
+   "name": "Las Olas Blvd",
+   "kind": "Dining and shops",
+   "lat": 26.1193,
+   "lon": -80.1334,
+   "side": "left"
+  },
+  {
+   "name": "Hollywood Beach Broadwalk",
+   "kind": "Beach",
+   "lat": 26.016,
+   "lon": -80.1157,
+   "side": "right"
+  },
+  {
+   "name": "Hard Rock Hollywood (Guitar Hotel)",
+   "kind": "Event",
+   "lat": 26.0518,
+   "lon": -80.2108,
+   "side": "left"
+  },
+  {
+   "name": "Sawgrass Mills",
+   "kind": "Dining and shops",
+   "lat": 26.1518,
+   "lon": -80.3232,
+   "side": "right"
+  },
+  {
+   "name": "Wilton Drive",
+   "kind": "Dining and shops",
+   "lat": 26.159,
+   "lon": -80.1388,
+   "side": "left"
+  },
+  {
+   "name": "Pompano Beach Pier",
+   "kind": "Beach",
+   "lat": 26.2326,
+   "lon": -80.087,
+   "side": "right"
+  },
+  {
+   "name": "Deerfield Beach Pier",
+   "kind": "Beach",
+   "lat": 26.3173,
+   "lon": -80.0745,
+   "side": "right"
+  }
+ ],
+ "shoreline": [
+  [
+   -80.118,
+   25.957
+  ],
+  [
+   -80.115,
+   26.01
+  ],
+  [
+   -80.111,
+   26.05
+  ],
+  [
+   -80.106,
+   26.085
+  ],
+  [
+   -80.103,
+   26.12
+  ],
+  [
+   -80.098,
+   26.16
+  ],
+  [
+   -80.095,
+   26.19
+  ],
+  [
+   -80.088,
+   26.23
+  ],
+  [
+   -80.08,
+   26.27
+  ],
+  [
+   -80.072,
+   26.32
+  ]
+ ]
+}

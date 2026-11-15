@@ -24,6 +24,7 @@ Run `uv sync` again after every `git pull`: packages change (statsmodels and imb
 | `docs/decisions_log.md` | Every cleaning decision and why |
 | `archive/` | First EDA on the June summary file (Jason) |
 | `notebooks/figures/ch5/` | Figures saved by the Ch 5 notebook |
+| `dashboard/` | Interactive dashboard (Observable Framework). See `dashboard/README.md` |
 | `notebooks/cache/` | Tuned models saved by notebooks so reruns are fast (not in GitHub) |
 
 ## Working rules

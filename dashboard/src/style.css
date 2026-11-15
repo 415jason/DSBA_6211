@@ -1,0 +1,57 @@
+@import url("observablehq:default.css");
+@import url("observablehq:theme-near-midnight.css");
+@import url("./components/inputs.css");
+@import url("./components/maplibre-gl.css");
+
+:root {
+  --theme-background: #0B1622;
+  --theme-background-alt: #101D2B;
+  --theme-foreground: #E6EDF3;
+  --theme-foreground-muted: #9FB0C0;
+  --theme-foreground-faint: #2A3B4C;
+  --theme-foreground-focus: #F08A4B;
+  --sans-serif: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --serif: Inter, system-ui, sans-serif;
+  --accent: #F08A4B;
+  --card: #101D2B;
+  --card-line: #1F3042;
+  color-scheme: dark;
+}
+body { background: var(--theme-background); font-family: var(--sans-serif); }
+#observablehq-main, #observablehq-main p, #observablehq-main li { font-family: var(--sans-serif); }
+.card { background: var(--card); border: 1px solid var(--card-line); border-radius: 14px; }
+.hero { margin: 1.25rem 0 1rem; }
+.hero h1 { font-size: clamp(2rem, 4vw, 3rem); line-height: 1.05; margin: .2rem 0 .6rem; max-width: none; font-weight: 800;
+  background: linear-gradient(30deg, #F08A4B, #FFD08A); -webkit-background-clip: text; background-clip: text; color: transparent; text-wrap: balance; }
+.eyebrow { text-transform: uppercase; letter-spacing: .12em; font-size: .78rem; color: var(--accent); margin: 0; font-weight: 600; }
+.lede { color: var(--theme-foreground-muted); max-width: 780px; }
+.kpi h2 { font-size: .82rem; color: var(--theme-foreground-muted); font-weight: 500; margin: 0 0 .25rem; }
+.kpi .big { font-size: 2.1rem; font-weight: 700; color: #F2F5F8; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.kpi .sub { font-size: .8rem; color: var(--theme-foreground-muted); }
+.kpi .up { color: #6FD3A7; } .kpi .down { color: #F27C7C; }
+.filter-wrap { display: flex; flex-wrap: wrap; gap: .6rem 1.4rem; align-items: flex-start; }
+.filters { display: flex; flex-wrap: wrap; gap: .5rem 1.6rem; --label-width: 82px; }
+.filters > * { margin: 0; }
+.filters input[type=number], .controls input[type=number] { display: none; }
+.active-filters { color: var(--theme-foreground-muted); font-size: .85rem; margin: -.25rem 0 1rem; }
+.active-filters b { color: var(--theme-foreground); font-weight: 600; }
+.map { position: relative; width: 100%; border-radius: 14px; overflow: hidden; background: #0B1622; }
+.map.offline::after { content: "Basemap offline: showing ZIP outlines"; position: absolute; left: 10px; bottom: 8px; font-size: 11px; color: #7F91A3; }
+.map-card { padding: 0; overflow: hidden; }
+.month-label { font-size: 1.8rem; font-weight: 700; color: #F2F5F8; }
+.controls { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; align-items: center; }
+.legend { display: flex; gap: 1rem; flex-wrap: wrap; font-size: .8rem; color: var(--theme-foreground-muted); }
+.legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; background: var(--c); vertical-align: -1px; }
+.foot { color: #7F91A3; font-size: .82rem; max-width: none; }
+table.nice { width: 100%; max-width: none; border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: .88rem; }
+table.nice th { text-align: right; color: var(--theme-foreground-muted); font-weight: 500; border-bottom: 1px solid var(--card-line); padding: .45rem .5rem; }
+table.nice td { text-align: right; padding: .4rem .5rem; border-bottom: 1px solid #16273A; }
+table.nice th:first-child, table.nice td:first-child { text-align: left; }
+.table-scroll { overflow-x: auto; }
+.pill { display: inline-block; padding: .05rem .5rem; border-radius: 999px; font-size: .75rem; background: #1D3047; color: #CFE0EE; }
+.placeholder { border: 1px dashed #2A3B4C; border-radius: 14px; padding: 2rem; color: var(--theme-foreground-muted); }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 1rem; margin: 1rem 0; }
+.kpis .card { margin: 0; }
+.controls form { --label-width: auto; }
+.controls form > label { margin-right: .5rem; }
