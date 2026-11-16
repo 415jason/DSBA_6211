@@ -16,7 +16,7 @@ const LM = await FileAttachment("data/landmarks.json").json();
 <div class="hero">
   <p class="eyebrow">Broward County Airbnb · DSBA 6211 group project</p>
   <h1>Who wins Broward's Airbnb market?</h1>
-  <p class="lede">Professional operators or independent hosts? How can an independent host compete? And is it still worth getting in? Start here for the market at a glance, then use the pages on the left. Your filters follow you from page to page.</p>
+  <p class="lede">Professional operators or independent hosts? How can an independent host compete? And is it still worth getting in?</p>
 </div>
 
 <div class="card">
@@ -50,10 +50,10 @@ display(emptyNote(html, s.listings));
 display(html`<div class="kpis">
   ${kpiCard(html, "Listings", fmtInt(s.listings), SNAP_LABEL[snap])}
   ${kpiCard(html, "Run by pros (10+ listings)", fmtPct(s.pro), "share of listings")}
-  ${kpiCard(html, "Active", fmtPct(s.active), "reviewed in the last 12 months")}
-  ${kpiCard(html, "Median nightly price", fmtMoney(s.price), snap === "2025-12-28" ? "December has no prices" : "standard sample")}
-  ${kpiCard(html, "Median booked nights", isNaN(s.nights) ? "n/a" : fmtInt(s.nights), snap === "2025-12-28" ? "estimated, active short-term listings" : "estimated, active listings")}
-  ${kpiCard(html, "Median yearly revenue", fmtMoney(s.revenue), snap === "2025-12-28" ? "needs a price; December has none" : "estimated, active listings")}
+  ${kpiCard(html, "Active", fmtPct(s.active), "reviewed in the past year")}
+  ${kpiCard(html, "Median nightly price", fmtMoney(s.price), snap === "2025-12-28" ? "not in this scrape" : "per night")}
+  ${kpiCard(html, "Median booked nights", isNaN(s.nights) ? "n/a" : fmtInt(s.nights), "per year, estimated")}
+  ${kpiCard(html, "Median yearly revenue", fmtMoney(s.revenue), snap === "2025-12-28" ? "not in this scrape" : "per listing, estimated")}
 </div>`);
 ```
 
@@ -112,4 +112,4 @@ M.set([...contextLayers(zips, LM, {showLandmarks: false}),
 ```
 
 <div class="card map-card">${M.el}</div>
-<p class="foot">Where the listings are, ${SNAP_LABEL[snap]}: brighter hexagons hold more listings. Booked nights and revenue are Inside Airbnb estimates built from reviews (2 x reviews in the last 12 months x nights per stay, capped at 255), good for comparing groups rather than exact counts. March 2026 is a partial scrape.</p>
+<p class="foot">Where the listings are, ${SNAP_LABEL[snap]}. Brighter hexagons hold more listings.</p>

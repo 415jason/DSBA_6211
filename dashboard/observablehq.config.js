@@ -10,7 +10,8 @@ export default {
     {name: "Seasons and neighborhoods", path: "/seasons"},
     {name: "What guests say", path: "/guests"},
     {name: "What drives performance", path: "/drivers"},
-    {name: "Our story", path: "/story"}
+    {name: "Our story", path: "/story"},
+    {name: "About the data", path: "/about"}
   ],
   sidebar: true,
   toc: false,

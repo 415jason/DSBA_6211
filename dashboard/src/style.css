@@ -36,7 +36,6 @@ body { background: var(--theme-background); font-family: var(--sans-serif); }
 .active-filters { color: var(--theme-foreground-muted); font-size: .85rem; margin: -.25rem 0 1rem; }
 .active-filters b { color: var(--theme-foreground); font-weight: 600; }
 .map { position: relative; width: 100%; border-radius: 14px; overflow: hidden; background: #0B1622; }
-.map.offline::after { content: "Basemap offline: showing ZIP outlines"; position: absolute; left: 10px; bottom: 8px; font-size: 11px; color: #7F91A3; }
 .map-card { padding: 0; overflow: hidden; }
 .month-label { font-size: 1.8rem; font-weight: 700; color: #F2F5F8; }
 .controls { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; align-items: center; }

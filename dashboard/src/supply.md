@@ -16,7 +16,7 @@ const LM = await FileAttachment("data/landmarks.json").json();
 <div class="hero">
   <p class="eyebrow">Supply · how many listings, and who runs them</p>
   <h1>A growing market, run more and more by pros</h1>
-  <p class="lede">Listings at each of the four scrapes, how many are active each month, who entered and left between December and September, and where professional operators cluster.</p>
+  <p class="lede">How many listings there are, who runs them, who came and went this year, and where the professional operators cluster.</p>
 </div>
 
 <div class="card">
@@ -63,23 +63,23 @@ const flow = (() => {
 const tot = flow.at(-1);
 display(html`<div class="kpis">
   ${kpiCard(html, "Listings, Sep 2026", fmtInt(tot.sep), `${tot.sep >= tot.dec ? "+" : ""}${fmtPct(tot.sep / tot.dec - 1)} since December`)}
-  ${kpiCard(html, "Entered since December", fmtInt(tot.entered), "new listing ids")}
+  ${kpiCard(html, "Entered since December", fmtInt(tot.entered), "new listings")}
   ${kpiCard(html, "Left since December", fmtInt(tot.left), `${fmtPct(tot.left / tot.dec)} of December's listings`)}
-  ${kpiCard(html, "Active in Aug 2026", fmtInt(active.at(-1).n), "reviewed at least once that month")}
+  ${kpiCard(html, "Active in Aug 2026", fmtInt(active.at(-1).n), "listings with a guest that month")}
 </div>`);
 ```
 
 <div class="grid grid-cols-2">
   <div class="card">${resize((width) => Plot.plot({
     width, height: 320, marginLeft: 50,
-    title: "Listings per scrape by host type (March reached only about 55%)",
+    title: "Listings by host type at each scrape",
     color: {domain: HOST_LABEL, range: HOST_COLOR, legend: true},
     x: {domain: Object.values(SNAP_LABEL), label: null}, y: {grid: true, label: "Listings"},
     marks: [Plot.barY(perSnap, {x: "snap", y: "n", fill: "host", order: HOST_LABEL, tip: true}), Plot.ruleY([0])]
   }))}</div>
   <div class="card">${resize((width) => Plot.plot({
     width, height: 320, marginLeft: 50,
-    title: "Monthly active listings (reviewed at least once that month)",
+    title: "Active listings per month",
     x: {type: "utc", label: null}, y: {grid: true, label: null},
     marks: [
       Plot.areaY(active, {x: "month", y: "n", fill: "#3FB8A8", fillOpacity: 0.15, curve: "monotone-x"}),
@@ -95,7 +95,6 @@ display(html`<div class="kpis">
     <thead><tr><th>Host type</th><th>Dec 2025</th><th>Left</th><th>Entered</th><th>Sep 2026</th><th>Exit rate</th><th>Net change</th></tr></thead>
     <tbody>${flow.map((r) => html`<tr style=${r.host === "All" ? "font-weight:600" : ""}><td>${r.host}</td><td>${fmtInt(r.dec)}</td><td>${fmtInt(r.left)}</td><td>${fmtInt(r.entered)}</td><td>${fmtInt(r.sep)}</td><td>${fmtPct(r.left / r.dec)}</td><td>${(r.sep - r.dec >= 0 ? "+" : "") + fmtInt(r.sep - r.dec)}</td></tr>`)}</tbody>
   </table>`}</div>
-  <p class="foot">A listing counts under its host type in its latest scrape. "Left" means in December but not in September; a relisted property counts as left, so this is an upper bound.${F.price < 1000 ? " The price filter is not applied here: December has no prices, so it would hide listings that left early." : ""}</p>
 </div>
 
 ```js

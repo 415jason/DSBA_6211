@@ -17,7 +17,7 @@ const LM = await FileAttachment("data/landmarks.json").json();
 <div class="hero">
   <p class="eyebrow">Demand · where and when guests come</p>
   <h1>Where guests went, month by month</h1>
-  <p class="lede">Each hexagon covers about 400 m. Color (and height in 3D) shows the demand measure for the listings that match your filters. Press play to watch the seasons move.</p>
+  <p class="lede">Each hexagon covers about 400 m. Press play to watch the seasons move across the county.</p>
 </div>
 
 <div class="card">
@@ -132,12 +132,12 @@ const top = ranks[0], low = ranks.at(-1);
 const rankTxt = (e) => (e ? (isCal ? fmtPct(e.rate) + " of nights" : e.rate.toFixed(2) + " reviews per listing") : "fewer than 30 listings per city");
 display(emptyNote(html, isCal ? kpi.listings : kpi.active));
 display(html`<div class="kpis">${isCal ? [
-  card(`Nights taken in ${monthName(month)}`, fmtPct(kpi.share), `booked or blocked, as of ${SNAP_LABEL[calSnap]}`),
-  card("Listings counted", fmtInt(kpi.listings), "with that month on their calendar"),
+  card(`Nights taken in ${monthName(month)}`, fmtPct(kpi.share), `as of ${SNAP_LABEL[calSnap]}`),
+  card("Listings counted", fmtInt(kpi.listings), "on the calendar"),
   card("Fullest city", top?.city ?? "n/a", rankTxt(top), "small"),
   card("Quietest city", low && low !== top ? low.city : "n/a", rankTxt(low !== top ? low : null), "small")
 ] : [
-  card(`Reviews in ${monthName(month)}`, fmtInt(kpi.main), "a stand-in for stays"),
+  card(`Reviews in ${monthName(month)}`, fmtInt(kpi.main), "guest reviews"),
   card("Listings reviewed", fmtInt(kpi.active), `${kpi.perActive.toFixed(2)} reviews each`),
   card("Same month last year", yoyTxt, "change in reviews", kpi.yoy == null ? "" : kpi.yoy >= 0 ? "up" : "down"),
   card("Most reviews per listing", top?.city ?? "n/a", rankTxt(top), "small")
@@ -189,11 +189,10 @@ M.map.easeTo(view3d ? {pitch: 55, bearing: -20, zoom: 10.3, center: [-80.16, 26.
       <h2 style="margin-top:0">Landmarks on the map</h2>
       <div class="legend">
         <span style="--c:#FFD666">Events</span><span style="--c:#B2A0FF">Travel</span>
-        <span style="--c:#60D2FF">Beaches</span><span style="--c:#FF8CBE">Dining and shops</span>
+        <span style="--c:#60D2FF">Beaches</span><span style="--c:#FF8CBE">Dining and shops</span><span style="--c:#40C4FF">Shoreline</span>
       </div>
-      <p class="foot" style="margin-top:.6rem">The bright blue line is the shoreline. Hard Rock Stadium sits just south of the county line, in Miami-Dade.</p>
     </div>
   </div>
 </div>
 
-<p class="foot">Reviews stand in for stays (guests review soon after checkout). Calendar nights count booked or owner-blocked nights, so they are an upper bound. Ratio measures hide hexagons with fewer than 3 listings. Drag to pan, scroll to zoom, right-drag to tilt and turn.</p>
+<p class="foot">Drag to pan, scroll to zoom, right-drag to tilt.</p>

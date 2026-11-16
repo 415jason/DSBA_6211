@@ -74,16 +74,15 @@ const beachTable = bands.map((b) => ({band: b, ...summarize(rows.filter((r) => r
 <div class="card">
   <h2 style="margin-top:0">By city, ${SNAP_LABEL[snap]}</h2>
   <div class="table-scroll">${html`<table class="nice">
-    <thead><tr><th>City</th><th>Listings</th><th>Pro share</th><th>Active share</th><th>Median price</th><th>Median nights*</th><th>Median revenue*</th><th>Revenue per bedroom*</th></tr></thead>
+    <thead><tr><th>City</th><th>Listings</th><th>Pro share</th><th>Active share</th><th>Median price</th><th>Median nights</th><th>Median revenue</th><th>Revenue per bedroom</th></tr></thead>
     <tbody>${cityTable.map((d) => html`<tr><td>${d.city}</td><td>${fmtInt(d.listings)}</td><td>${fmtPct(d.pro)}</td><td>${fmtPct(d.active)}</td><td>${fmtMoney(d.price)}</td><td>${fmtInt(d.nights)}</td><td>${fmtMoney(d.revenue)}</td><td>${fmtMoney(d.rpb)}</td></tr>`)}</tbody>
   </table>`}</div>
-  <p class="foot">Standard sample, the 15 largest cities. *Estimated, active listings only.</p>
 </div>
 
 <div class="grid grid-cols-2">
   <div class="card">${resize((width) => Plot.plot({
     width, height: 280, marginLeft: 50,
-    title: "Median estimated booked nights by distance to the beach",
+    title: "Median booked nights by distance to the beach",
     x: {domain: bands, label: null}, y: {grid: true, label: "Nights"},
     marks: [Plot.barY(beachTable, {x: "band", y: "nights", fill: "#3FB8A8", tip: true}), Plot.ruleY([0])]
   }))}</div>

@@ -58,7 +58,7 @@ export function filterPanel(D) {
   wrap.className = "filter-wrap";
   const head = document.createElement("div");
   head.className = "filter-head";
-  head.innerHTML = "<h2>Filters</h2><span class='foot'>Leave a group empty to include everything. Filters carry over to every page.</span>";
+  head.innerHTML = "<h2>Filters</h2>";
   wrap.append(head, form, reset);
   wrap.value = form.value;
   form.addEventListener("input", () => { wrap.value = form.value; wrap.dispatchEvent(new Event("input")); });
