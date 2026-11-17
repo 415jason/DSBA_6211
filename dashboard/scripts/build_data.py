@@ -10,6 +10,7 @@ Run from the repo root:  python dashboard/scripts/build_data.py
 
 import base64
 import json
+import shutil
 import sys
 import urllib.request
 from pathlib import Path
@@ -197,3 +198,24 @@ for f in json.loads(GEO_CACHE.read_text())["features"]:
 (OUT / "zips.json").write_text(json.dumps({"type": "FeatureCollection",
                                            "features": feats}))
 print("zips.json:", len(feats), "ZIPs")
+
+# 5. Chapter results for the guests, drivers and story pages ----------------
+# These come from the chapter notebooks' own exports, so the dashboard shows
+# exactly what the notebooks computed. Run the notebooks first.
+NB = ROOT / "notebooks"
+shutil.copy(NB / "figures" / "ch3" / "dashboard_guests.json", OUT / "guests.json")
+shutil.copy(NB / "figures" / "ch6" / "dashboard_model.json", OUT / "model.json")
+CO = NB / "chapter_outputs"
+drivers = {
+    "host_summary": pd.read_csv(CO / "host_summary.csv").to_dict("records"),
+    "adjusted": pd.read_csv(CO / "adjusted_tiers.csv").drop(columns=["Unnamed: 0"], errors="ignore").to_dict("records"),
+    "drivers": pd.read_csv(CO / "drivers.csv").drop(columns=["Unnamed: 0"], errors="ignore").to_dict("records"),
+    "importance_occupancy": pd.read_csv(CO / "feature_importance_occupancy.csv").drop(columns=["Unnamed: 0"], errors="ignore").to_dict("records"),
+    "importance_revenue": pd.read_csv(CO / "feature_importance_revenue.csv").drop(columns=["Unnamed: 0"], errors="ignore").to_dict("records"),
+    "price_bands": pd.read_csv(CO / "price_bands.csv").to_dict("records"),
+    "price_contrasts": pd.read_csv(CO / "price_contrasts.csv").drop(columns=["Unnamed: 0"], errors="ignore").to_dict("records"),
+    "validation": pd.read_csv(CO / "model_validation.csv").drop(columns=["Unnamed: 0"], errors="ignore").to_dict("records"),
+    "profile": pd.read_csv(CO / "profile_results.csv").drop(columns=["Unnamed: 0"], errors="ignore").to_dict("records"),
+}
+(OUT / "drivers.json").write_text(json.dumps(drivers, separators=(",", ":"), default=float))
+print("guests.json, model.json, drivers.json copied from notebook exports")

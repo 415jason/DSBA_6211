@@ -1,0 +1,11 @@
+,stay_rule,listing_months,unavailable,observed_days,unavailable_pct,sample
+0,1 night,22593,164699,692852,23.77116613649091,All months
+1,2 nights,14208,120712,435712,27.704538777908343,All months
+2,3 nights,5694,52000,174616,29.779630732578916,All months
+3,4–6 nights,2535,25211,77740,32.429894520195525,All months
+4,7–29 nights,1995,18110,61180,29.601176855181432,All months
+5,1 night,21187,121574,649727,18.711551159179162,Fully blocked months excluded
+6,2 nights,13127,87527,402527,21.74437988010742,Fully blocked months excluded
+7,3 nights,5048,32187,154803,20.792232708668436,Fully blocked months excluded
+8,4–6 nights,2194,14767,67296,21.943354731336186,Fully blocked months excluded
+9,7–29 nights,1646,7400,50470,14.662175549831582,Fully blocked months excluded

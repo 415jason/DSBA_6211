@@ -25,6 +25,11 @@ Only needed after the cleaned data changes. Put the 7 cleaned files in
 python dashboard/scripts/build_data.py
 ```
 
+The guests, drivers and story pages read the summary files the chapter notebooks
+export (`notebooks/figures/ch3/dashboard_guests.json`, `notebooks/chapter_outputs/`,
+`notebooks/figures/ch6/dashboard_model.json`), so rerun notebooks 03, 04 and 06
+first if their results change.
+
 That writes the small JSON files in `src/data/` (about 6 MB, committed to git).
 The dashboard reads only those, so it runs without the big data files. It also
 downloads Florida ZIP shapes once into `scripts/cache/` (not committed).

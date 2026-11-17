@@ -53,3 +53,19 @@ title: About the data
 - **September** is the low season, so its prices run below the yearly average.
 
 </div>
+
+<div class="card">
+
+## Methods behind the guests, drivers and story pages
+
+- **Review sentiment (What guests say):** each English review of more than three words from January 2024 to August 2026 is scored with VADER, a word-list method that gives -1 (negative) to +1 (positive). Scores of 0.05 or more count as positive, -0.05 or less as negative. Host type is the listing's latest type, not the type on the review date.
+- **Review topics:** a review mentions a topic when it contains one of its keywords, for example "clean" or "dirty" for cleanliness and "pool", "parking" or "wifi" for amenities. A mention can be praise or a complaint.
+- **Similar listings (What drives performance):** regressions that compare host types while holding city, room and property type, size, distances to the beach, airport and stadium, and seven amenities equal, with uncertainty clustered by host. These are associations, not proof that a trait causes bookings.
+- **Look-alike pricing:** each listing's price divided by the median price of its 15 closest listings from other hosts in the same city, room type and bedroom count.
+- **Fees and booking policies:** the data have minimum and maximum stays but no cleaning fees, cancellation policies or Instant Book, so those cannot be measured.
+- **Prediction model:** a random forest trained on 75% of hosts and tested on the other 25%, so no host appears in both.
+- **Break-even calculator (Our story):** revenue is from established listings (first review over a year earlier) of that type, scaled from September prices to a full-year price level using the same listings' prices in March, June and September (x1.11 to x1.14). Costs: Zillow's typical value for each listing's ZIP, a 30-year mortgage at the September 2026 rate, property tax of 19.84 mills on 91% of the price, Airbnb's 15.5% host fee, $880 registration, insurance with a 25% short-term markup, flood cover for houses, and a hurricane reserve (one storm every 6 years, a 2% deductible on half of them, 14 nights lost). Not included: HOA unless set, cleaning, utilities, repairs.
+- **12-month lease:** HUD's 2026 Fair Market Rent for Broward by bedroom count, adjusted to each ZIP with Zillow's rent index, with 5% vacancy and an 8% management fee.
+- **New listings' odds:** whole homes of the three starter types that were new in December 2025, tracked to the September 2026 scrape.
+
+</div>

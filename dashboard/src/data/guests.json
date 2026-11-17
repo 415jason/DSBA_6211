@@ -1,0 +1,815 @@
+{
+ "reviews": 399691,
+ "share_of_file": 0.4782297085808091,
+ "sentiment_pct": {
+  "Positive": 95.79,
+  "Negative": 2.64,
+  "Neutral": 1.58
+ },
+ "mean_sentiment": 0.7942,
+ "by_tier_reviews": [
+  {
+   "host_tier": "single",
+   "review_count": 80771,
+   "average_sentiment": 0.826,
+   "median_sentiment": 0.913,
+   "positive_pct": 97.05,
+   "negative_pct": 1.675
+  },
+  {
+   "host_tier": "small (2-9)",
+   "review_count": 154301,
+   "average_sentiment": 0.805,
+   "median_sentiment": 0.901,
+   "positive_pct": 96.281,
+   "negative_pct": 2.223
+  },
+  {
+   "host_tier": "pro (10+)",
+   "review_count": 164525,
+   "average_sentiment": 0.768,
+   "median_sentiment": 0.881,
+   "positive_pct": 94.697,
+   "negative_pct": 3.5
+  }
+ ],
+ "by_tier_listings": [
+  {
+   "host_tier": "single",
+   "listing_count": 2359,
+   "average_sentiment": 0.819,
+   "median_sentiment": 0.841
+  },
+  {
+   "host_tier": "small (2-9)",
+   "listing_count": 4143,
+   "average_sentiment": 0.8,
+   "median_sentiment": 0.821
+  },
+  {
+   "host_tier": "pro (10+)",
+   "listing_count": 5310,
+   "average_sentiment": 0.758,
+   "median_sentiment": 0.784
+  }
+ ],
+ "listings_5plus": 11812,
+ "rating_correlation": 0.689,
+ "rating_listings": 9511,
+ "topics": [
+  {
+   "Topic": "Communication",
+   "Review Count": 157325,
+   "Percentage": 39.36
+  },
+  {
+   "Topic": "Location",
+   "Review Count": 154300,
+   "Percentage": 38.6
+  },
+  {
+   "Topic": "Cleanliness",
+   "Review Count": 123516,
+   "Percentage": 30.9
+  },
+  {
+   "Topic": "Amenities",
+   "Review Count": 100396,
+   "Percentage": 25.12
+  },
+  {
+   "Topic": "Value",
+   "Review Count": 20736,
+   "Percentage": 5.19
+  }
+ ],
+ "negative_reviews": 10542,
+ "negative_topics": [
+  {
+   "Topic": "Amenities",
+   "Negative Review Mentions": 5077,
+   "Percentage of Negative Reviews": 48.16
+  },
+  {
+   "Topic": "Communication",
+   "Negative Review Mentions": 4114,
+   "Percentage of Negative Reviews": 39.02
+  },
+  {
+   "Topic": "Cleanliness",
+   "Negative Review Mentions": 3558,
+   "Percentage of Negative Reviews": 33.75
+  },
+  {
+   "Topic": "Location",
+   "Negative Review Mentions": 2562,
+   "Percentage of Negative Reviews": 24.3
+  },
+  {
+   "Topic": "Value",
+   "Negative Review Mentions": 1236,
+   "Percentage of Negative Reviews": 11.72
+  }
+ ],
+ "negative_topics_by_tier": [
+  {
+   "host_tier": "single",
+   "Cleanliness": 34.59,
+   "Location": 22.1,
+   "Communication": 40.65,
+   "Amenities": 49.0,
+   "Value": 11.75
+  },
+  {
+   "host_tier": "small (2-9)",
+   "Cleanliness": 32.97,
+   "Location": 23.0,
+   "Communication": 37.14,
+   "Amenities": 47.55,
+   "Value": 11.84
+  },
+  {
+   "host_tier": "pro (10+)",
+   "Cleanliness": 34.02,
+   "Location": 25.59,
+   "Communication": 39.76,
+   "Amenities": 48.32,
+   "Value": 11.65
+  }
+ ],
+ "monthly": [
+  {
+   "month": "2025-01",
+   "review_count": 12403,
+   "avg_sentiment": 0.7903,
+   "negative_pct": 2.7896
+  },
+  {
+   "month": "2025-02",
+   "review_count": 13005,
+   "avg_sentiment": 0.7956,
+   "negative_pct": 2.4913
+  },
+  {
+   "month": "2025-03",
+   "review_count": 16970,
+   "avg_sentiment": 0.7988,
+   "negative_pct": 2.5457
+  },
+  {
+   "month": "2025-04",
+   "review_count": 14273,
+   "avg_sentiment": 0.8008,
+   "negative_pct": 2.5012
+  },
+  {
+   "month": "2025-05",
+   "review_count": 12879,
+   "avg_sentiment": 0.7937,
+   "negative_pct": 2.4458
+  },
+  {
+   "month": "2025-06",
+   "review_count": 12146,
+   "avg_sentiment": 0.7983,
+   "negative_pct": 2.6593
+  },
+  {
+   "month": "2025-07",
+   "review_count": 12317,
+   "avg_sentiment": 0.7995,
+   "negative_pct": 2.598
+  },
+  {
+   "month": "2025-08",
+   "review_count": 11088,
+   "avg_sentiment": 0.7921,
+   "negative_pct": 2.7146
+  },
+  {
+   "month": "2025-09",
+   "review_count": 8980,
+   "avg_sentiment": 0.7873,
+   "negative_pct": 2.8953
+  },
+  {
+   "month": "2025-10",
+   "review_count": 10161,
+   "avg_sentiment": 0.7887,
+   "negative_pct": 2.6277
+  },
+  {
+   "month": "2025-11",
+   "review_count": 13066,
+   "avg_sentiment": 0.7824,
+   "negative_pct": 2.9083
+  },
+  {
+   "month": "2025-12",
+   "review_count": 13909,
+   "avg_sentiment": 0.7711,
+   "negative_pct": 3.4582
+  },
+  {
+   "month": "2026-01",
+   "review_count": 16549,
+   "avg_sentiment": 0.7758,
+   "negative_pct": 3.3537
+  },
+  {
+   "month": "2026-02",
+   "review_count": 16148,
+   "avg_sentiment": 0.7771,
+   "negative_pct": 3.5113
+  },
+  {
+   "month": "2026-03",
+   "review_count": 21584,
+   "avg_sentiment": 0.7881,
+   "negative_pct": 3.0439
+  },
+  {
+   "month": "2026-04",
+   "review_count": 17074,
+   "avg_sentiment": 0.7986,
+   "negative_pct": 2.7293
+  },
+  {
+   "month": "2026-05",
+   "review_count": 15747,
+   "avg_sentiment": 0.7944,
+   "negative_pct": 2.8958
+  },
+  {
+   "month": "2026-06",
+   "review_count": 14031,
+   "avg_sentiment": 0.793,
+   "negative_pct": 3.086
+  },
+  {
+   "month": "2026-07",
+   "review_count": 13659,
+   "avg_sentiment": 0.7945,
+   "negative_pct": 2.7967
+  },
+  {
+   "month": "2026-08",
+   "review_count": 11971,
+   "avg_sentiment": 0.7877,
+   "negative_pct": 3.1576
+  }
+ ],
+ "monthly_by_tier": [
+  {
+   "month": "2025-01",
+   "host_tier": "single",
+   "review_count": 2580,
+   "avg_sentiment": 0.8179
+  },
+  {
+   "month": "2025-01",
+   "host_tier": "small (2-9)",
+   "review_count": 4857,
+   "avg_sentiment": 0.8075
+  },
+  {
+   "month": "2025-01",
+   "host_tier": "pro (10+)",
+   "review_count": 4962,
+   "avg_sentiment": 0.7591
+  },
+  {
+   "month": "2025-02",
+   "host_tier": "single",
+   "review_count": 2800,
+   "avg_sentiment": 0.8287
+  },
+  {
+   "month": "2025-02",
+   "host_tier": "small (2-9)",
+   "review_count": 5104,
+   "avg_sentiment": 0.8064
+  },
+  {
+   "month": "2025-02",
+   "host_tier": "pro (10+)",
+   "review_count": 5096,
+   "avg_sentiment": 0.7666
+  },
+  {
+   "month": "2025-03",
+   "host_tier": "single",
+   "review_count": 3699,
+   "avg_sentiment": 0.828
+  },
+  {
+   "month": "2025-03",
+   "host_tier": "small (2-9)",
+   "review_count": 6572,
+   "avg_sentiment": 0.8082
+  },
+  {
+   "month": "2025-03",
+   "host_tier": "pro (10+)",
+   "review_count": 6696,
+   "avg_sentiment": 0.7733
+  },
+  {
+   "month": "2025-04",
+   "host_tier": "single",
+   "review_count": 2939,
+   "avg_sentiment": 0.8372
+  },
+  {
+   "month": "2025-04",
+   "host_tier": "small (2-9)",
+   "review_count": 5582,
+   "avg_sentiment": 0.8118
+  },
+  {
+   "month": "2025-04",
+   "host_tier": "pro (10+)",
+   "review_count": 5747,
+   "avg_sentiment": 0.7716
+  },
+  {
+   "month": "2025-05",
+   "host_tier": "single",
+   "review_count": 2451,
+   "avg_sentiment": 0.8237
+  },
+  {
+   "month": "2025-05",
+   "host_tier": "small (2-9)",
+   "review_count": 4967,
+   "avg_sentiment": 0.8054
+  },
+  {
+   "month": "2025-05",
+   "host_tier": "pro (10+)",
+   "review_count": 5458,
+   "avg_sentiment": 0.7696
+  },
+  {
+   "month": "2025-06",
+   "host_tier": "single",
+   "review_count": 2304,
+   "avg_sentiment": 0.8267
+  },
+  {
+   "month": "2025-06",
+   "host_tier": "small (2-9)",
+   "review_count": 4697,
+   "avg_sentiment": 0.815
+  },
+  {
+   "month": "2025-06",
+   "host_tier": "pro (10+)",
+   "review_count": 5144,
+   "avg_sentiment": 0.7701
+  },
+  {
+   "month": "2025-07",
+   "host_tier": "single",
+   "review_count": 2452,
+   "avg_sentiment": 0.8308
+  },
+  {
+   "month": "2025-07",
+   "host_tier": "small (2-9)",
+   "review_count": 4859,
+   "avg_sentiment": 0.8074
+  },
+  {
+   "month": "2025-07",
+   "host_tier": "pro (10+)",
+   "review_count": 5003,
+   "avg_sentiment": 0.7765
+  },
+  {
+   "month": "2025-08",
+   "host_tier": "single",
+   "review_count": 2051,
+   "avg_sentiment": 0.8377
+  },
+  {
+   "month": "2025-08",
+   "host_tier": "small (2-9)",
+   "review_count": 4350,
+   "avg_sentiment": 0.7969
+  },
+  {
+   "month": "2025-08",
+   "host_tier": "pro (10+)",
+   "review_count": 4683,
+   "avg_sentiment": 0.7676
+  },
+  {
+   "month": "2025-09",
+   "host_tier": "single",
+   "review_count": 1628,
+   "avg_sentiment": 0.8151
+  },
+  {
+   "month": "2025-09",
+   "host_tier": "small (2-9)",
+   "review_count": 3456,
+   "avg_sentiment": 0.8002
+  },
+  {
+   "month": "2025-09",
+   "host_tier": "pro (10+)",
+   "review_count": 3893,
+   "avg_sentiment": 0.7642
+  },
+  {
+   "month": "2025-10",
+   "host_tier": "single",
+   "review_count": 1903,
+   "avg_sentiment": 0.827
+  },
+  {
+   "month": "2025-10",
+   "host_tier": "small (2-9)",
+   "review_count": 3889,
+   "avg_sentiment": 0.8004
+  },
+  {
+   "month": "2025-10",
+   "host_tier": "pro (10+)",
+   "review_count": 4366,
+   "avg_sentiment": 0.7614
+  },
+  {
+   "month": "2025-11",
+   "host_tier": "single",
+   "review_count": 2592,
+   "avg_sentiment": 0.8167
+  },
+  {
+   "month": "2025-11",
+   "host_tier": "small (2-9)",
+   "review_count": 4997,
+   "avg_sentiment": 0.7979
+  },
+  {
+   "month": "2025-11",
+   "host_tier": "pro (10+)",
+   "review_count": 5474,
+   "avg_sentiment": 0.7519
+  },
+  {
+   "month": "2025-12",
+   "host_tier": "single",
+   "review_count": 2764,
+   "avg_sentiment": 0.8192
+  },
+  {
+   "month": "2025-12",
+   "host_tier": "small (2-9)",
+   "review_count": 5294,
+   "avg_sentiment": 0.7782
+  },
+  {
+   "month": "2025-12",
+   "host_tier": "pro (10+)",
+   "review_count": 5850,
+   "avg_sentiment": 0.742
+  },
+  {
+   "month": "2026-01",
+   "host_tier": "single",
+   "review_count": 3415,
+   "avg_sentiment": 0.8111
+  },
+  {
+   "month": "2026-01",
+   "host_tier": "small (2-9)",
+   "review_count": 6408,
+   "avg_sentiment": 0.7887
+  },
+  {
+   "month": "2026-01",
+   "host_tier": "pro (10+)",
+   "review_count": 6726,
+   "avg_sentiment": 0.7456
+  },
+  {
+   "month": "2026-02",
+   "host_tier": "single",
+   "review_count": 3529,
+   "avg_sentiment": 0.8154
+  },
+  {
+   "month": "2026-02",
+   "host_tier": "small (2-9)",
+   "review_count": 6100,
+   "avg_sentiment": 0.7912
+  },
+  {
+   "month": "2026-02",
+   "host_tier": "pro (10+)",
+   "review_count": 6519,
+   "avg_sentiment": 0.7431
+  },
+  {
+   "month": "2026-03",
+   "host_tier": "single",
+   "review_count": 4753,
+   "avg_sentiment": 0.8175
+  },
+  {
+   "month": "2026-03",
+   "host_tier": "small (2-9)",
+   "review_count": 8185,
+   "avg_sentiment": 0.7979
+  },
+  {
+   "month": "2026-03",
+   "host_tier": "pro (10+)",
+   "review_count": 8646,
+   "avg_sentiment": 0.7626
+  },
+  {
+   "month": "2026-04",
+   "host_tier": "single",
+   "review_count": 3546,
+   "avg_sentiment": 0.83
+  },
+  {
+   "month": "2026-04",
+   "host_tier": "small (2-9)",
+   "review_count": 6370,
+   "avg_sentiment": 0.8124
+  },
+  {
+   "month": "2026-04",
+   "host_tier": "pro (10+)",
+   "review_count": 7158,
+   "avg_sentiment": 0.7707
+  },
+  {
+   "month": "2026-05",
+   "host_tier": "single",
+   "review_count": 3091,
+   "avg_sentiment": 0.8261
+  },
+  {
+   "month": "2026-05",
+   "host_tier": "small (2-9)",
+   "review_count": 5778,
+   "avg_sentiment": 0.8068
+  },
+  {
+   "month": "2026-05",
+   "host_tier": "pro (10+)",
+   "review_count": 6878,
+   "avg_sentiment": 0.7698
+  },
+  {
+   "month": "2026-06",
+   "host_tier": "single",
+   "review_count": 2786,
+   "avg_sentiment": 0.8318
+  },
+  {
+   "month": "2026-06",
+   "host_tier": "small (2-9)",
+   "review_count": 5082,
+   "avg_sentiment": 0.8061
+  },
+  {
+   "month": "2026-06",
+   "host_tier": "pro (10+)",
+   "review_count": 6163,
+   "avg_sentiment": 0.7646
+  },
+  {
+   "month": "2026-07",
+   "host_tier": "single",
+   "review_count": 2769,
+   "avg_sentiment": 0.8248
+  },
+  {
+   "month": "2026-07",
+   "host_tier": "small (2-9)",
+   "review_count": 5086,
+   "avg_sentiment": 0.8082
+  },
+  {
+   "month": "2026-07",
+   "host_tier": "pro (10+)",
+   "review_count": 5804,
+   "avg_sentiment": 0.7681
+  },
+  {
+   "month": "2026-08",
+   "host_tier": "single",
+   "review_count": 2241,
+   "avg_sentiment": 0.8283
+  },
+  {
+   "month": "2026-08",
+   "host_tier": "small (2-9)",
+   "review_count": 4473,
+   "avg_sentiment": 0.8001
+  },
+  {
+   "month": "2026-08",
+   "host_tier": "pro (10+)",
+   "review_count": 5257,
+   "avg_sentiment": 0.7599
+  }
+ ],
+ "city_tier": [
+  {
+   "city": "Dania Beach",
+   "host_tier": "single",
+   "reviews": 3968,
+   "mean": 0.7899,
+   "negative_pct": 1.9909
+  },
+  {
+   "city": "Dania Beach",
+   "host_tier": "small (2-9)",
+   "reviews": 7378,
+   "mean": 0.76,
+   "negative_pct": 3.1716
+  },
+  {
+   "city": "Dania Beach",
+   "host_tier": "pro (10+)",
+   "reviews": 4682,
+   "mean": 0.7351,
+   "negative_pct": 3.8872
+  },
+  {
+   "city": "Deerfield Beach",
+   "host_tier": "single",
+   "reviews": 4152,
+   "mean": 0.8434,
+   "negative_pct": 1.1802
+  },
+  {
+   "city": "Deerfield Beach",
+   "host_tier": "small (2-9)",
+   "reviews": 9036,
+   "mean": 0.8314,
+   "negative_pct": 1.4387
+  },
+  {
+   "city": "Deerfield Beach",
+   "host_tier": "pro (10+)",
+   "reviews": 5164,
+   "mean": 0.7956,
+   "negative_pct": 2.4787
+  },
+  {
+   "city": "Fort Lauderdale",
+   "host_tier": "single",
+   "reviews": 23114,
+   "mean": 0.836,
+   "negative_pct": 1.5013
+  },
+  {
+   "city": "Fort Lauderdale",
+   "host_tier": "small (2-9)",
+   "reviews": 55459,
+   "mean": 0.8076,
+   "negative_pct": 2.1007
+  },
+  {
+   "city": "Fort Lauderdale",
+   "host_tier": "pro (10+)",
+   "reviews": 66660,
+   "mean": 0.7785,
+   "negative_pct": 2.8908
+  },
+  {
+   "city": "Hallandale Beach",
+   "host_tier": "single",
+   "reviews": 3449,
+   "mean": 0.7831,
+   "negative_pct": 2.9864
+  },
+  {
+   "city": "Hallandale Beach",
+   "host_tier": "small (2-9)",
+   "reviews": 4048,
+   "mean": 0.7825,
+   "negative_pct": 3.0632
+  },
+  {
+   "city": "Hallandale Beach",
+   "host_tier": "pro (10+)",
+   "reviews": 10369,
+   "mean": 0.6966,
+   "negative_pct": 7.1559
+  },
+  {
+   "city": "Hollywood",
+   "host_tier": "single",
+   "reviews": 14896,
+   "mean": 0.8185,
+   "negative_pct": 2.0542
+  },
+  {
+   "city": "Hollywood",
+   "host_tier": "small (2-9)",
+   "reviews": 27062,
+   "mean": 0.7903,
+   "negative_pct": 2.9081
+  },
+  {
+   "city": "Hollywood",
+   "host_tier": "pro (10+)",
+   "reviews": 39185,
+   "mean": 0.7559,
+   "negative_pct": 4.0398
+  },
+  {
+   "city": "Lauderdale By The Sea",
+   "host_tier": "single",
+   "reviews": 898,
+   "mean": 0.864,
+   "negative_pct": 1.0022
+  },
+  {
+   "city": "Lauderdale By The Sea",
+   "host_tier": "small (2-9)",
+   "reviews": 3766,
+   "mean": 0.8178,
+   "negative_pct": 2.1508
+  },
+  {
+   "city": "Lauderdale By The Sea",
+   "host_tier": "pro (10+)",
+   "reviews": 5323,
+   "mean": 0.8012,
+   "negative_pct": 2.555
+  },
+  {
+   "city": "Oakland Park",
+   "host_tier": "single",
+   "reviews": 4918,
+   "mean": 0.8423,
+   "negative_pct": 1.342
+  },
+  {
+   "city": "Oakland Park",
+   "host_tier": "small (2-9)",
+   "reviews": 6325,
+   "mean": 0.8213,
+   "negative_pct": 2.0237
+  },
+  {
+   "city": "Oakland Park",
+   "host_tier": "pro (10+)",
+   "reviews": 3834,
+   "mean": 0.7945,
+   "negative_pct": 2.6865
+  },
+  {
+   "city": "Pompano Beach",
+   "host_tier": "single",
+   "reviews": 5440,
+   "mean": 0.8423,
+   "negative_pct": 1.5625
+  },
+  {
+   "city": "Pompano Beach",
+   "host_tier": "small (2-9)",
+   "reviews": 15147,
+   "mean": 0.8393,
+   "negative_pct": 1.459
+  },
+  {
+   "city": "Pompano Beach",
+   "host_tier": "pro (10+)",
+   "reviews": 14590,
+   "mean": 0.7796,
+   "negative_pct": 3.1597
+  },
+  {
+   "city": "Wilton Manors",
+   "host_tier": "single",
+   "reviews": 3691,
+   "mean": 0.8713,
+   "negative_pct": 0.7857
+  },
+  {
+   "city": "Wilton Manors",
+   "host_tier": "small (2-9)",
+   "reviews": 8641,
+   "mean": 0.8155,
+   "negative_pct": 1.7243
+  },
+  {
+   "city": "Wilton Manors",
+   "host_tier": "pro (10+)",
+   "reviews": 6882,
+   "mean": 0.7955,
+   "negative_pct": 2.5138
+  }
+ ]
+}
