@@ -39,7 +39,7 @@ title: About the data
 - **Calendar nights taken** are nights booked or blocked by the owner, so they are an upper bound on bookings.
 - **Seasonal index:** reviews in each month of 2023 to 2025, divided by the average month and multiplied by 100.
 - **Entered and left:** a listing in December but not in September counts as left. A property that was relisted counts as left too, so the exit rate is an upper bound. This table does not use the price filter.
-- **Map hexagons** are about 400 m across. Ratio measures show hexagons with 3 or more listings; city rankings use cities with 30 or more.
+- **Map hexagons:** each listing sits at its own map point (Airbnb shifts it up to about 150 m for privacy), and reviews and calendar nights count at their listing's point. Points are grouped into cells about 400 m across, drawn as hexagons; ZIP outlines are there for orientation only. Click a hexagon to see its listings by property type, bedrooms and host type. Ratio measures show hexagons with 3 or more listings; city rankings use cities with 30 or more.
 
 </div>
 
@@ -48,7 +48,7 @@ title: About the data
 ## Limits of each scrape
 
 - **March 2026** reached only about 55% of listings, mostly busy ones, so its counts run low and its performance runs high.
-- **December 2025** has no prices. The price filter uses each listing's latest known price instead, and revenue is not available for December.
+- **December 2025** has no prices. The price range filter uses each listing's latest known price instead, and revenue is not available for December.
 - **June 2026** prices include the World Cup.
 - **September** is the low season, so its prices run below the yearly average.
 

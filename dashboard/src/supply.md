@@ -5,7 +5,7 @@ title: Supply
 ```js
 import {Plot, Inputs, html} from "./components/libs.js";
 import {ColumnLayer} from "./components/mapstack.js";
-import {bytes, filterPanel, filterSummary, mask, snapRows, kpiCard, createMap, contextLayers,
+import {bytes, filterPanel, filterSummary, mask, snapRows, kpiCard, createMap, contextLayers, cellPanel, selectedLayer,
   fmtInt, fmtPct, SNAP_LABEL, HOST_LABEL, HOST_COLOR} from "./components/dash.js";
 const D = await FileAttachment("data/listings.json").json();
 const REV = await FileAttachment("data/reviews.json").json();
@@ -45,7 +45,7 @@ const flow = (() => {
   const dec = bytes(D.snap["2025-12-28"].present), sep = bytes(D.snap["2026-09-22"].present);
   // December has no prices, so the price filter would drop listings that left before they ever
   // showed one. The flow ignores the price filter to keep the comparison fair.
-  const F2 = {...F, price: 1000};
+  const F2 = {...F, price: [0, 1000]};
   const kd = mask(D, F2, "2025-12-28"), ks = mask(D, F2, "2026-09-22");
   const out = HOST_LABEL.map((h) => ({host: h, dec: 0, sep: 0, left: 0, entered: 0}));
   const tot = {host: "All", dec: 0, sep: 0, left: 0, entered: 0};
@@ -107,20 +107,27 @@ invalidation.then(() => M.destroy());
 ```
 
 ```js
+const selKey = Mutable(null);
+const setSel = (k) => (selKey.value = k);
+```
+
+```js
 const rows = snapRows(D, mask(D, F, snap), snap);
 const cells = (() => {
   const m = new Map();
   for (const r of rows) {
     const gx = Math.round(D.lon[r.i] / 0.0042), gy = Math.round(D.lat[r.i] / 0.0037), k = gx * 100000 + gy;
-    let c = m.get(k); if (!c) m.set(k, (c = {lon: gx * 0.0042, lat: gy * 0.0037, n: 0, pro: 0}));
-    c.n++; if (r.host === 2) c.pro++;
+    let c = m.get(k); if (!c) m.set(k, (c = {key: k, lon: gx * 0.0042, lat: gy * 0.0037, n: 0, pro: 0, ids: []}));
+    c.n++; c.ids.push(r.i); if (r.host === 2) c.pro++;
   }
   return [...m.values()].map((c) => ({...c, share: c.pro / c.n, tip: `${c.n} listings, ${fmtPct(c.pro / c.n)} run by pros`}));
 })();
+const selCell = cells.find((c) => c.key === selKey) ?? null;
 const colorShare = (s) => { const a = [255, 159, 90], b = [76, 125, 255]; return a.map((v, j) => Math.round(v + (b[j] - v) * s)).concat(225); };
 M.set([...contextLayers(zips, LM, {showLandmarks: false}),
   new ColumnLayer({id: "pros", data: cells, diskResolution: 6, radius: 200, extruded: false, getPosition: (d) => [d.lon, d.lat],
-    getFillColor: (d) => colorShare(d.share), pickable: true, updateTriggers: {getFillColor: snap}}),
+    getFillColor: (d) => colorShare(d.share), pickable: true, updateTriggers: {getFillColor: snap}, onClick: ({object}) => setSel(object ? object.key : null)}),
+  selectedLayer(selCell, ColumnLayer),
   ...contextLayers(zips, LM).slice(3)]);
 ```
 
@@ -133,3 +140,7 @@ M.set([...contextLayers(zips, LM, {showLandmarks: false}),
     <p class="foot" style="margin-top:1rem">Pros cluster in the beachfront condo towers, above all along the Hallandale Beach and South Hollywood strip. Inland neighborhoods are mostly independent and small hosts.</p>
   </div>
 </div>
+
+```js
+display(cellPanel(html, D, selCell, {snap, onClear: () => setSel(null)}));
+```

@@ -5,7 +5,7 @@ title: Overview
 ```js
 import {Plot, Inputs, html} from "./components/libs.js";
 import {ColumnLayer} from "./components/mapstack.js";
-import {bytes, filterPanel, filterSummary, mask, snapRows, summarize, kpiCard, emptyNote, createMap, contextLayers, binCells,
+import {bytes, filterPanel, filterSummary, mask, snapRows, summarize, kpiCard, emptyNote, createMap, contextLayers, binCells, cellPanel, selectedLayer,
   fmtInt, fmtPct, fmtMoney, SNAP_LABEL, HOST_LABEL, HOST_COLOR, ACCENT} from "./components/dash.js";
 const D = await FileAttachment("data/listings.json").json();
 const REV = await FileAttachment("data/reviews.json").json();
@@ -100,16 +100,27 @@ invalidation.then(() => M.destroy());
 ```
 
 ```js
+const selKey = Mutable(null);
+const setSel = (k) => (selKey.value = k);
+```
+
+```js
 const ones = new Uint8Array(D.n);
 for (const r of rows) ones[r.i] = 1;
 const cells = binCells(D, ones, ones).map((c) => ({...c, tip: `${c.listings} listings`}));
 const maxN = Math.max(1, ...cells.map((c) => c.value));
+const selCell = cells.find((c) => c.key === selKey) ?? null;
 M.set([...contextLayers(zips, LM, {showLandmarks: false}),
   new ColumnLayer({id: "supply", data: cells, diskResolution: 6, radius: 200, extruded: false,
     getPosition: (d) => [d.lon, d.lat], getFillColor: (d) => { const t = Math.log1p(d.value) / Math.log1p(maxN); return [70 + 120 * t, 140 + 60 * t, 220, 120 + 120 * t]; },
-    pickable: true, updateTriggers: {getFillColor: maxN}}),
+    pickable: true, updateTriggers: {getFillColor: maxN}, onClick: ({object}) => setSel(object ? object.key : null)}),
+  selectedLayer(selCell, ColumnLayer),
   ...contextLayers(zips, LM).slice(3)]);
 ```
 
 <div class="card map-card">${M.el}</div>
-<p class="foot">Where the listings are, ${SNAP_LABEL[snap]}. Brighter hexagons hold more listings.</p>
+<p class="foot">Where the listings are, ${SNAP_LABEL[snap]}. Brighter hexagons hold more listings. Click one to see what is inside.</p>
+
+```js
+display(cellPanel(html, D, selCell, {snap, onClear: () => setSel(null)}));
+```

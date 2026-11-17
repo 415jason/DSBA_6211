@@ -35,6 +35,36 @@ function saved() {
   try { return JSON.parse(localStorage.getItem(KEY)) ?? {}; } catch { return {}; }
 }
 
+// ------------------------------------------------------------ price range
+// One slider with two handles. value = [min, max]; max = PRICE_MAX means no upper limit.
+export const PRICE_MAX = 1000;
+export function priceBounds(v) {
+  if (Array.isArray(v)) return [Math.min(v[0], v[1]), Math.max(v[0], v[1])];
+  return [0, typeof v === "number" ? v : PRICE_MAX];   // older saved filters stored only a max
+}
+export function priceRange({label = "Price", min = 0, max = PRICE_MAX, step = 25, value = [min, max]} = {}) {
+  const el = document.createElement("div");
+  el.className = "price-range";
+  el.innerHTML = `<label>${label}</label><div class="pr-body"><div class="pr-track"><div class="pr-fill"></div>
+    <input type="range" min="${min}" max="${max}" step="${step}" aria-label="Minimum price">
+    <input type="range" min="${min}" max="${max}" step="${step}" aria-label="Maximum price"></div><output></output></div>`;
+  const [a, b] = el.querySelectorAll("input"), fill = el.querySelector(".pr-fill"), out = el.querySelector("output");
+  const [v0, v1] = priceBounds(value);
+  a.value = v0; b.value = v1;
+  const fmt = (x) => "$" + x.toLocaleString("en-US");
+  const draw = () => {
+    const lo = Math.min(+a.value, +b.value), hi = Math.max(+a.value, +b.value);
+    fill.style.left = ((lo - min) / (max - min)) * 100 + "%";
+    fill.style.right = (100 - ((hi - min) / (max - min)) * 100) + "%";
+    out.textContent = lo === min && hi === max ? "Any price" : `${fmt(lo)} to ${hi === max ? fmt(max) + "+" : fmt(hi)}`;
+    a.style.zIndex = +a.value > max - step * 2 ? 3 : 2;   // keep the low handle grabbable at the far right
+    return [lo, hi];
+  };
+  el.value = draw();
+  for (const inp of [a, b]) inp.addEventListener("input", (e) => { e.stopPropagation(); el.value = draw(); el.dispatchEvent(new Event("input", {bubbles: true})); });
+  return el;
+}
+
 export function filterPanel(D) {
   const s = saved();
   const st = D.static;
@@ -46,7 +76,7 @@ export function filterPanel(D) {
     prop: Inputs.checkbox(["Condo or apartment", "House or townhouse", "Hotel or resort"], {label: "Property", value: pick(st.prop.labels, s.prop)}),
     host: Inputs.checkbox(HOST_LABEL, {label: "Host type", value: pick(HOST_LABEL, s.host)}),
     beach: Inputs.checkbox(st.beach.labels.filter((b) => b !== "Unknown"), {label: "To beach", value: pick(st.beach.labels, s.beach)}),
-    price: Inputs.range([50, 1000], {label: "Max price", step: 25, value: s.price ?? 1000})
+    price: priceRange({label: "Price / night", value: Array.isArray(s.price) ? s.price : [0, typeof s.price === "number" ? s.price : PRICE_MAX]})
   });
   form.classList.add("filters");
   form.addEventListener("input", () => { try { localStorage.setItem(KEY, JSON.stringify(form.value)); } catch {} });
@@ -74,6 +104,7 @@ export function mask(D, F, snap) {
   const host = F.host.length ? new Set(F.host.map((h) => HOST_LABEL.indexOf(h))) : null;
   const S = snap ? D.snap[snap] : null;
   const hostArr = S ? S.host : st.host.codes, priceArr = S ? S.price : D.price;
+  const [lo, hi] = priceBounds(F.price);
   for (let i = 0; i < n; i++) {
     if (D.midterm[i] === 1) continue;
     if (cityCode >= 0 && st.city.codes[i] !== cityCode) continue;
@@ -81,11 +112,11 @@ export function mask(D, F, snap) {
     if (prop && !prop.has(st.prop.codes[i])) continue;
     if (beach && !beach.has(st.beach.codes[i])) continue;
     if (host && !host.has(hostArr[i])) continue;
-    if (F.price < 1000) {
+    if (lo > 0 || hi < PRICE_MAX) {
       // A scrape without a price for this listing (all of December) falls back to its latest known price.
       let p = priceArr[i];
       if (p == null || p < 0) p = D.price[i];
-      if (p == null || p < 0 || p > F.price) continue;
+      if (p == null || p < 0 || p < lo || (hi < PRICE_MAX && p > hi)) continue;
     }
     k[i] = 1;
   }
@@ -99,7 +130,10 @@ export function filterSummary(F) {
   if (F.prop.length) parts.push(F.prop.join(" or "));
   if (F.host.length) parts.push(F.host.join(" or "));
   if (F.beach.length) parts.push(F.beach.join(" or ") + " from the beach");
-  if (F.price < 1000) parts.push(`up to $${F.price}/night`);
+  const [lo, hi] = priceBounds(F.price);
+  if (lo > 0 && hi < PRICE_MAX) parts.push(`$${lo} to $${hi}/night`);
+  else if (lo > 0) parts.push(`from $${lo}/night`);
+  else if (hi < PRICE_MAX) parts.push(`up to $${hi}/night`);
   return parts.length ? parts.join(" · ") : "All short-term listings";
 }
 
@@ -122,7 +156,7 @@ export function createMap({height = 620, view = {}} = {}) {
   map.on("error", (e) => {
     if (!fellBack && !map.isStyleLoaded()) { fellBack = true; map.setStyle(FALLBACK_STYLE); el.classList.add("offline"); }
   });
-  const overlay = new MapboxOverlay({interleaved: false, layers: [], getTooltip: ({object}) => object?.tip ?? null});
+  const overlay = new MapboxOverlay({interleaved: false, layers: [], pickingRadius: 8, getTooltip: ({object}) => object?.tip ?? null});
   map.addControl(overlay);
   map.addControl(new maplibregl.NavigationControl({visualizePitch: true}), "top-right");
   // The element is created before it is on the page; resize once it has a size.
@@ -175,8 +209,8 @@ export function binCells(D, keep, values, {cell = [0.0042, 0.0037]} = {}) {
     const gx = Math.round(D.lon[i] / cell[0]), gy = Math.round(D.lat[i] / cell[1]);
     const key = gx * 100000 + gy;
     let c = m.get(key);
-    if (!c) m.set(key, (c = {lon: gx * cell[0], lat: gy * cell[1], value: 0, listings: 0}));
-    c.value += v; c.listings += 1;
+    if (!c) m.set(key, (c = {key, lon: gx * cell[0], lat: gy * cell[1], value: 0, listings: 0, ids: []}));
+    c.value += v; c.listings += 1; c.ids.push(i);
   }
   return [...m.values()];
 }
@@ -228,4 +262,36 @@ export function cityRank(D, keep, num, den) {
     e.num += num[i]; e.den += den[i]; e.n += 1; m.set(c, e);
   }
   return [...m.values()].filter((e) => e.n >= 30).map((e) => ({...e, rate: e.num / e.den})).sort((a, b) => b.rate - a.rate);
+}
+
+
+// ------------------------------------------------------- hexagon breakdown
+// What is inside one map hexagon: listings by property type, bedrooms and host type.
+const PROP_COLOR = {"Condo or apartment": "#4C7DFF", "House or townhouse": "#3FD0A8", "Hotel or resort": "#B2A0FF", "Other": "#9FB0C0"};
+export function cellPanel(html, D, cell, {snap = null, what = "listings", onClear} = {}) {
+  if (!cell) return html`<div class="card cell-panel empty"><h2>Click a hexagon</h2><p>See what kind of listings are inside it: property type, bedrooms, host type and price.</p></div>`;
+  const st = D.static, S = snap ? D.snap[snap] : null, ids = cell.ids, n = ids.length;
+  const count = (labels, codeOf) => { const c = new Array(labels.length).fill(0); for (const i of ids) { const k = codeOf(i); if (k >= 0) c[k]++; } return labels.map((l, j) => ({label: l, n: c[j]})).filter((d) => d.n > 0); };
+  const props = count(st.prop.labels, (i) => st.prop.codes[i]);
+  const beds = count(st.bed.labels, (i) => st.bed.codes[i]);
+  const hosts = count(HOST_LABEL, (i) => (S && S.host[i] >= 0 ? S.host[i] : st.host.codes[i]));
+  const cities = count(st.city.labels, (i) => st.city.codes[i]).sort((a, b) => b.n - a.n);
+  const prices = ids.map((i) => { let p = S ? S.price[i] : -1; if (p == null || p < 0) p = D.price[i]; return p; }).filter((p) => p != null && p >= 0);
+  const bars = (rows, color) => html`<div class="cp-bars">${rows.map((d) => html`<div class="cp-row"><span class="cp-l">${d.label}</span><span class="cp-bar"><i style=${`width:${(d.n / n) * 100}%;background:${color(d.label)}`}></i></span><span class="cp-n">${d.n} <small>${Math.round((d.n / n) * 100)}%</small></span></div>`)}</div>`;
+  const clear = html`<button class="cp-clear" title="Clear selection">Clear</button>`;
+  clear.onclick = () => onClear && onClear();
+  return html`<div class="card cell-panel">
+    <div class="cp-head"><div><h2>${fmtInt(n)} ${n === 1 ? what.replace("listings", "listing") : what} in this hexagon</h2>
+      <p>${cities.slice(0, 2).map((d) => d.label).join(" and ")} · median ${fmtMoney(median(prices))}/night${cell.tipShort ? " · " + cell.tipShort : ""}</p></div>${clear}</div>
+    <div class="cp-grid">
+      <div><h3>Property type</h3>${bars(props, (l) => PROP_COLOR[l] ?? "#9FB0C0")}</div>
+      <div><h3>Bedrooms</h3>${bars(beds, () => "#F08A4B")}</div>
+      <div><h3>Host type</h3>${bars(hosts, (l) => HOST_COLOR[HOST_LABEL.indexOf(l)])}</div>
+    </div>
+  </div>`;
+}
+// Outline drawn around the selected hexagon.
+export function selectedLayer(cell, ColumnLayer) {
+  return new ColumnLayer({id: "selected", data: cell ? [cell] : [], diskResolution: 6, radius: 230, extruded: false, filled: false, stroked: true,
+    getPosition: (d) => [d.lon, d.lat], getLineColor: [255, 255, 255, 240], lineWidthMinPixels: 2.5, pickable: false});
 }

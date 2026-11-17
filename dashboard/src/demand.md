@@ -5,7 +5,7 @@ title: Demand map
 ```js
 import {Plot, Inputs, html} from "./components/libs.js";
 import {ColumnLayer} from "./components/mapstack.js";
-import {bytes, filterPanel, filterSummary, mask, createMap, contextLayers, binCells, rampColor, cityRank, emptyNote,
+import {bytes, filterPanel, filterSummary, mask, createMap, contextLayers, binCells, rampColor, cityRank, emptyNote, cellPanel, selectedLayer,
   monthName, fmtInt, fmtPct, SNAP_LABEL, ACCENT} from "./components/dash.js";
 const D = await FileAttachment("data/listings.json").json();
 const REV = await FileAttachment("data/reviews.json").json();
@@ -155,14 +155,25 @@ invalidation.then(() => M.destroy());
 ```
 
 ```js
+const selKey = Mutable(null);
+const setSel = (k) => (selKey.value = k);
+```
+
+```js
+const selCell = cells.find((c) => c.key === selKey) ?? null;
+```
+
+```js
 M.set([
   ...contextLayers(zips, LM, {showLandmarks: false}),
   new ColumnLayer({
     id: "demand", data: cells, diskResolution: 6, radius: 200, extruded: view3d,
     getPosition: (d) => [d.lon, d.lat], getElevation: (d) => d.shown, elevationScale: heightScale,
     getFillColor: (d) => color(d.shown), pickable: true, autoHighlight: true, highlightColor: [255, 255, 255, 90],
-    transitions: {getElevation: 500, getFillColor: 300}, updateTriggers: {getFillColor: [maxShown, measure], getElevation: [measure]}
+    transitions: {getElevation: 500, getFillColor: 300}, updateTriggers: {getFillColor: [maxShown, measure], getElevation: [measure]},
+    onClick: ({object}) => setSel(object ? object.key : null)
   }),
+  selectedLayer(selCell, ColumnLayer),
   ...(showLm ? contextLayers(zips, LM).slice(3) : [])
 ]);
 ```
@@ -195,4 +206,9 @@ M.map.easeTo(view3d ? {pitch: 55, bearing: -20, zoom: 10.3, center: [-80.16, 26.
   </div>
 </div>
 
-<p class="foot">Drag to pan, scroll to zoom, right-drag to tilt.</p>
+```js
+display(cellPanel(html, D, selCell, {snap: isCal ? calSnap : null, onClear: () => setSel(null),
+  what: isCal ? "listings with a calendar" : measure === "Reviews" || measure.startsWith("Reviews per") ? `listings reviewed in ${monthName(month)}` : "listings"}));
+```
+
+<p class="foot">Click a hexagon to see what is inside it. Drag to pan, scroll to zoom, right-drag to tilt.</p>
