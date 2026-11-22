@@ -1,0 +1,568 @@
+[
+ [
+  "text",
+  "Normal",
+  "Harper Clark",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "DSBA 6211, Broward Airbnb Group Project",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "November 16, 2026",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Chapter 1: Market Overview of Short-Term Rentals in Broward County",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "This chapter describes the Broward County short-term rental market as it stood in the twelve months to September 2026: how large it is, how it has changed, when demand is concentrated, how conditions differ across the county, and what it costs to buy into it. It is meant to set the context for the chapters that follow, which ask whether professional operators or independent hosts perform better and whether entering the market still makes sense for a new host. The analysis draws on the four Inside Airbnb snapshots of Broward County taken on December 28, 2025, March 30, 2026, June 29, 2026 and September 22, 2026 (Inside Airbnb, 2026a), on Zillow's home value and rent indices by ZIP code (Zillow, 2026), on Florida Department of Revenue records of property sales (Florida Department of Revenue, 2026) and on Freddie Mac's 30-year mortgage rate (Freddie Mac, 2026), supplemented by public data on tourism, air and cruise traffic and regulation. Every figure computed from these data is produced by the companion notebook, 02_market_overview.ipynb. Following the conventions of the project, the September snapshot is treated as the primary source because the December scrape contains no prices, the March scrape reached only about 55 percent of listings, and June prices were inflated by the World Cup. Unless otherwise stated, performance figures refer to the team's standard sample of 15,698 listings, 89 percent of the September total, that are open for booking, carry a plausible nightly price without a one-time spike and accept stays shorter than 30 nights. This is the same sample used in Chapter 6.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Two features of the data shape how the results should be read. First, Airbnb does not publish bookings, so nights booked and revenue are Inside Airbnb estimates derived from reviews: the model assumes roughly half of guests leave a review, multiplies by a typical stay of at least three nights, caps the result at 255 nights a year, and multiplies nights by the listed price (Inside Airbnb, 2026b). These estimates are useful for comparing groups of listings but understate activity for listings whose guests review less often, and they assign zero to listings with no review in the past year. Medians of nights and revenue are therefore reported for active listings, defined as those with at least one review in the preceding twelve months, which make up 72 percent of the sample. Second, the review history used as a demand series is built by taking each listing's reviews from the latest snapshot in which it appears, yielding 835,772 reviews. Because listings that left Airbnb before December 2025 are absent from every snapshot, earlier years are understated and long-run growth is overstated, so I rely mainly on year-over-year comparisons for recent trends.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "By any measure, Broward is a large market. In September 2026 Inside Airbnb recorded 17,630 listings operated by 6,524 host accounts. Eighty-four percent were entire homes or apartments, 14 percent private rooms and about one percent hotel rooms. The typical listing has one bedroom and accommodates four guests, and the median nightly price in the standard sample was about $232, or $250 for entire homes, with an interquartile range of $153 to $359. Forty-eight percent of listings accept one-night stays and another 30 percent require two nights, so the market is oriented toward short leisure trips rather than monthly rentals. Among active listings, the median listing booked an estimated 72 nights over the year, roughly 20 percent of available nights, and earned an estimated $16,100; the 75th percentile earned about $34,200. Revenue is highly concentrated, with the top tenth of listings accounting for 45 percent of the estimated total. Summed across the sample, Inside Airbnb's model implies roughly $289 million in revenue for October 2025 through September 2026. That figure can be checked against an independent source. Airbnb reports having collected and remitted $22.4 million in tourism taxes for Broward between June 2024 and June 2025 (Airbnb, 2026). If that amount reflects only the county's six percent tourist development tax, it implies about $373 million in taxable bookings; if it also includes the state's six percent tax and the county's one percent surtax, it implies about $172 million. The estimate falls within that range, which suggests the order of magnitude is sound, and the same arithmetic places Airbnb stays at somewhere between 8 and 18 percent of the $124 million in tourist development tax the county collected in 2025 (Visit Lauderdale, 2026a). For further context, the county's hotel inventory has exceeded 35,000 rooms since 2017 (Hotel Online, 2017), so Airbnb listings are of the same order of magnitude as the hotel stock, although a listing is often a whole home that sleeps several guests.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "The supply side is dominated by two products. Apartments and condominium units are the most numerous, at nearly 8,000 listings in the sample; 70 percent of them lie within a mile of the beach, 61 percent are studios or one-bedroom units, and 67 percent are run by professional hosts with ten or more listings. Houses, villas and townhouses, of which there are about 4,600, sit mostly further inland, with only 24 percent within a mile of the beach. They typically have three bedrooms, are mostly operated by independent or small hosts, with a professional share of 33 percent, and earn the most per listing, with an estimated median of about $32,300 for active houses against $11,700 for apartments and condos. Among apartments and condos, those within a mile of the beach earn less than those further inland, at $10,400 against $14,400. Ownership of the market is correspondingly professionalized. Hosts with ten or more listings operate 49 percent of all listings but represent only 11 percent of host accounts, whereas single-listing hosts represent 53 percent of accounts and operate 20 percent of listings. Two operators illustrate the degree of concentration: Stay Sol runs 926 listings across ten accounts in Hollywood and Hallandale Beach, and Beachwalk runs 671 across six accounts, 97 percent of them in Hallandale Beach. On raw figures, independent hosts appear to outperform, with a median active single-host listing earning an estimated $19,800 and booking 84 nights, against $13,500 and 54 nights for professional listings. Much of that gap reflects location and property type rather than management: houses make up 52 percent of active single-host listings but only 25 percent of professional ones, and 58 percent of professional listings are within a mile of the beach, against 29 percent of single-host listings. The controlled comparisons in Chapters 2 and 4 find that single hosts and professionals book at similar rates once listings are matched on comparable characteristics.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Supply grew by 7.3 percent between December 2025 and September 2026, from 16,424 to 17,630 listings, but the net figure conceals considerable turnover. Of the listings present in December, 4,279, or 26 percent, had disappeared by September, while 5,485 new listings entered. The exit rate was nearly identical for single, small and professional hosts at between 25 and 27 percent, which indicates that churn is a feature of the market rather than of a particular type of operator. Entry, by contrast, was led by professionals, who accounted for 2,972 of the new listings, or 54 percent, and a substantial part of it reflects consolidation rather than the addition of new housing. Beachwalk alone accounts for 607 of the new listings, half of the market's net growth of 1,206, and those listings are located at only twelve distinct map points, consistent with a small number of large Hallandale Beach buildings being placed on Airbnb unit by unit. Hallandale Beach's total listing count rose by only 251 over the same period, which implies that part of this growth replaced listings removed by other hosts. Growth was uneven across the county: Hallandale Beach (14 percent), Pompano Beach (13 percent) and Lauderdale-By-The-Sea (11 percent) grew fastest, while Fort Lauderdale (5 percent), Hollywood (6 percent) and Deerfield Beach (1 percent) grew slowly. Supply is also geographically concentrated to an unusual degree, with a single square kilometer along the Hallandale Beach and South Hollywood beach strip containing about 2,750 sample listings, or 17 percent of the county total, 78 percent of them professionally operated.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Figure 1. Guest reviews and listings reviewed per month, Broward County, January 2019 to August 2026",
+  false
+ ],
+ [
+  "image",
+  "/home/claude/dsba_6211/report/build/assets/ch1_1.png"
+ ],
+ [
+  "text",
+  "Normal",
+  "Note. Reviews serve as a proxy for stays. September 2026 is excluded because of review lag. Listings removed before December 2025 are not observed, so earlier years are understated. Source: author's calculations from Inside Airbnb (2026a).",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Demand, as reflected in reviews, has grown steadily since the pandemic, as Figure 1 shows, and reached its highest monthly level in March 2026 with 25,496 reviews. The more informative comparison, however, is between the latest twelve months and the year before. Between October 2025 and August 2026, reviews rose 22.4 percent relative to the same months a year earlier, but the number of listings receiving at least one review in a month rose 21.4 percent, leaving reviews per reviewed listing essentially unchanged at about 2.6 per month. The previous year shows the same pattern, with reviews and reviewed listings each growing by about a third (32 and 33 percent). Restricting the window to October through May, so as to exclude the World Cup, does not change the conclusion, with reviews up 25 percent and reviewed listings up 23 percent. In short, the market has been absorbing additional listings without the average listing becoming busier; growth in demand has been divided among a growing number of competitors rather than filling unmet demand. The city figures point the same way, although less cleanly. The two cities with the fastest supply growth, Hallandale Beach and Pompano Beach, recorded among the weakest growth in reviews (14 and 16 percent), against 28 to 31 percent in Hollywood, Lauderdale-By-The-Sea and Dania Beach. Fort Lauderdale (17 percent) and Wilton Manors (16 percent) also grew slowly despite modest supply growth, so new supply is not the only explanation.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "The broader tourism economy offers a more muted picture than the Airbnb data alone. Greater Fort Lauderdale received more than 20.9 million visitors in 2025, and hotels reached 85 percent occupancy in March 2026 at an average daily rate of $240.49, yet tourist development tax revenue rose only 0.3 percent in 2025 and hotel demand only 1.3 percent (Visit Lauderdale, 2026a, 2026b). If Airbnb activity grew by roughly a fifth while overall lodging demand was nearly flat, short-term rentals are likely gaining share within a market that is not itself expanding much, although part of the gap may reflect the growing share of bookings made through Airbnb rather than a change in total travel.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Several external developments bear directly on the short-term rental segment. Air access weakened: Fort Lauderdale-Hollywood International Airport handled 32.2 million passengers in 2025, 8.5 percent fewer than in 2024, with international traffic down 16 percent (Broward County Aviation Department, 2026a; Yahoo News, 2026). Passenger counts recovered modestly in early 2026, rising 2.7 percent from January through May, but fell 10.7 percent in May (Broward County Aviation Department, 2026b), the month Spirit Airlines, for which Fort Lauderdale was one of its three largest airports, ceased operations (Aviation Week, 2026). Because only a small share of Spirit's routes lacked competing service, other carriers can absorb much of that traffic, but the price-sensitive leisure traveler who books a budget condominium is the guest most exposed to the loss of low-fare capacity.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Canadian visitation, historically the backbone of Broward's winter season and of the beach condominium market in particular, also continued to decline: Canadian visitors to Florida fell 14.7 percent in 2025, and nonstop flights between Canada and Fort Lauderdale fell about 7 percent in 2025 and nearly 9 percent in the first half of 2026 (WLRN, 2026a, 2026b). The clearest source of growth is cruise traffic, with Port Everglades handling a record 4.77 million cruise guests in fiscal 2025, an increase of 16 percent (Cruise Industry News, 2025), and the county's tourism bureau has made converting those passengers into multi-night pre- and post-cruise visitors a strategic priority (Visit Lauderdale, 2025), a segment well suited to short-term rentals near the port. Nationally, AirDNA projects slower supply growth of 4.6 percent in 2026, a one percent decline in occupancy and a 1.5 percent increase in average daily rates (Albany CEO, 2025); Broward's supply growth of 7.3 percent in nine months is running well ahead of that pace.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "The 2026 World Cup, analyzed in detail in Chapter 5, provides a useful stress test of the market's capacity to capture event demand. Hard Rock Stadium, located about a mile south of the Broward line, hosted seven matches between June 15 and July 18. Short-term rental revenue in the Miami area rose 27 percent to $203.7 million for June 10 through July 19, but almost all of the gain came from higher rates, with match-night average daily rates of $302, up 24 percent, while additional nights contributed only $6.2 million (Hotel Online, 2026a). Match-day demand rose 8 percent and non-match demand fell 2 percent (The Real Deal, 2026). Broward hotels saw occupancy rise 9.7 percent and revenue per available room nearly 30 percent around the June 27 Portugal versus Colombia match (Axios Fort Lauderdale, 2026), while Miami-area hotel occupancy across all match nights actually declined by about 4 percent to 73 percent (Hotel Online, 2026b). These findings align with Chapter 5's conclusion that event demand was real but modest, concentrated in time and space, and better treated as an outlier than as evidence of the market's ordinary earning power.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Figure 2. Seasonal index of guest reviews by month, Broward County, 2023 to 2025 average",
+  false
+ ],
+ [
+  "image",
+  "/home/claude/dsba_6211/report/build/assets/ch1_2.png"
+ ],
+ [
+  "text",
+  "Normal",
+  "Note. Each year's monthly reviews are divided by that year's monthly average and multiplied by 100, and the three years are averaged. June through November, the Atlantic hurricane season, is shown in orange. Source: author's calculations from Inside Airbnb (2026a).",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Demand in Broward is strongly seasonal, as Figure 2 illustrates. Activity builds from November, remains at or above average from December through May, and peaks in March at an index of 131, when spring break, the end of the snowbird season and Easter tend to overlap. It eases in June to 90, recovers to average in July with summer holiday travel, and reaches its low in September at 74, coinciding with the peak of hurricane season and the start of the school year. On average, December through May runs about 10 percent above the annual mean and June through November about 10 percent below. The pattern is common to the whole county, but some communities swing more sharply than others: Lauderdale-By-The-Sea moves from 131 in March to 63 in September, and Dania Beach, Deerfield Beach and Hallandale Beach all fall to 68 or 69, whereas Fort Lauderdale (76) and Hollywood (75), the two largest and most varied markets, are the most stable, consistent with a broader mix of business, event and year-round leisure travel. The forward calendar in the September scrape is consistent with this pattern: 38 percent of February 2027 nights at listings within a mile of the beach were already unavailable, compared with 32 percent further inland. Because calendar unavailability combines bookings with nights blocked by owners, these shares are best read as an upper bound rather than a booking rate. For a host, the practical implication is that most of a year's income is earned in roughly six months, and that the weakest months coincide with the period of greatest storm risk, which Chapter 6 incorporates into its cost analysis.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "The market also differs substantially across the county, and Table 1 compares the nine largest cities, which together hold about 89 percent of sample listings, with the remainder. Three distinct submarkets emerge. The first consists of saturated beach condominium markets, most clearly Hallandale Beach and, to a lesser degree, Pompano Beach and Hollywood. Hallandale Beach has the most professional supply in the county, with 79 percent of listings run by professional operators and Stay Sol and Beachwalk together operating 60 percent of its sample listings, the lowest share of recently reviewed listings at 54 percent, and a median of only 24 estimated nights a year. Beachwalk's new and not-yet-reviewed units account for part of that weakness, but the remaining Hallandale listings also perform poorly, with a median of 36 nights, and at $200 a night its prices are the lowest of any beach city, consistent with competition among nearly identical units. The second submarket comprises established mixed markets such as Fort Lauderdale, Lauderdale-By-The-Sea and Deerfield Beach. Fort Lauderdale, the largest and most balanced, is about half professional, has 79 percent of listings active and a median of 90 nights, and benefits from several overlapping demand generators, including the beach, Las Olas Boulevard, the cruise port, the convention center and the airport. The third consists of inland neighborhood markets, namely Wilton Manors, Oakland Park and Dania Beach. These cities have no beach frontage, are dominated by independent and small hosts, with professional shares of 25 to 36 percent, and post active shares of 79 to 85 percent, estimated bookings of 90 to 102 nights and estimated revenue of $21,400 to $23,900. In all three, houses and townhouses make up 45 to 60 percent of listings, compared with 7 percent in Hallandale Beach.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Table 1. Market characteristics by city, standard sample, September 2026",
+  false
+ ],
+ [
+  "table",
+  [
+   [
+    "City",
+    "Listings",
+    "Growth Dec–Sep",
+    "Pro share",
+    "Active share",
+    "Median price",
+    "Median nights",
+    "Median revenue",
+    "Within 1 mi of beach"
+   ],
+   [
+    "Fort Lauderdale",
+    "3,996",
+    "5%",
+    "53%",
+    "79%",
+    "$240",
+    "90",
+    "$21,800",
+    "38%"
+   ],
+   [
+    "Hollywood",
+    "3,783",
+    "6%",
+    "53%",
+    "77%",
+    "$255",
+    "60",
+    "$14,700",
+    "66%"
+   ],
+   [
+    "Pompano Beach",
+    "1,932",
+    "13%",
+    "64%",
+    "57%",
+    "$234",
+    "60",
+    "$13,600",
+    "57%"
+   ],
+   [
+    "Hallandale Beach",
+    "1,770",
+    "14%",
+    "79%",
+    "54%",
+    "$200",
+    "24",
+    "$4,800",
+    "84%"
+   ],
+   [
+    "Deerfield Beach",
+    "686",
+    "1%",
+    "34%",
+    "81%",
+    "$214",
+    "70",
+    "$15,000",
+    "58%"
+   ],
+   [
+    "Wilton Manors",
+    "475",
+    "6%",
+    "36%",
+    "85%",
+    "$256",
+    "96",
+    "$23,900",
+    "0%"
+   ],
+   [
+    "Lauderdale-By-The-Sea",
+    "463",
+    "11%",
+    "54%",
+    "83%",
+    "$237",
+    "66",
+    "$16,500",
+    "100%"
+   ],
+   [
+    "Dania Beach",
+    "458",
+    "6%",
+    "32%",
+    "79%",
+    "$198",
+    "102",
+    "$22,000",
+    "0%"
+   ],
+   [
+    "Oakland Park",
+    "428",
+    "4%",
+    "25%",
+    "84%",
+    "$255",
+    "90",
+    "$21,400",
+    "0%"
+   ],
+   [
+    "Other beach towns",
+    "115",
+    "8%",
+    "49%",
+    "80%",
+    "$333",
+    "72",
+    "$23,400",
+    "91%"
+   ],
+   [
+    "All other (inland) cities",
+    "1,592",
+    "7%",
+    "19%",
+    "69%",
+    "$155",
+    "78",
+    "$14,000",
+    "0%"
+   ],
+   [
+    "Broward County",
+    "15,698",
+    "7%",
+    "51%",
+    "72%",
+    "$232",
+    "72",
+    "$16,100",
+    "48%"
+   ]
+  ]
+ ],
+ [
+  "text",
+  "Normal",
+  "Note. Median nights and revenue are Inside Airbnb estimates for active listings only. Growth is calculated on all listings, December 2025 to September 2026. Pro share is the share of listings run by host accounts with ten or more listings across all markets. Other beach towns are Hillsboro Beach, Lighthouse Point and Sea Ranch Lakes. Source: author's calculations from Inside Airbnb (2026a).",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Figure 3 restates the geographic pattern in terms of distance from the ocean. Nearly half of all listings, 48 percent, lie within a mile of the beach, and about two-thirds of those are professionally operated, yet these listings book the fewest estimated nights, with medians of 54 for listings within a quarter mile of the shore and 48 for those between a quarter mile and a mile away. Estimated performance peaks one to three miles inland, where homes are larger, professional operators run 42 percent of listings and the median active listing books 90 nights and earns about $20,700. Two caveats temper this result. Guests at professionally managed beach condominiums may review less often than guests at a host-operated house, in which case beach listings are busier than the review-based estimates imply; Chapter 4 addresses this with calendar data and statistical controls. In addition, many beach condominiums are second homes whose owners block part of the year for personal use. Even allowing for both, the pattern is consistent across every available measure: the beachfront is where supply has accumulated, and competition there is primarily among professional operators offering similar units.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Figure 3. Listings and median estimated revenue by distance to the beach, standard sample, September 2026",
+  false
+ ],
+ [
+  "image",
+  "/home/claude/dsba_6211/report/build/assets/ch1_3.png"
+ ],
+ [
+  "text",
+  "Normal",
+  "Note. Distance is measured from each listing's published location, which Inside Airbnb shifts by up to about 150 meters for privacy, to the shoreline. Revenue is estimated for active listings. Professional shares by band, nearest to farthest, are 65, 69, 42, 40 and 18 percent, and median estimated nights are 54, 48, 90, 84 and 78. Source: author's calculations from Inside Airbnb (2026a).",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "The regulatory environment shapes how hosts can compete. Florida law prohibits local governments from banning vacation rentals or regulating the duration or frequency of rentals, unless the relevant ordinance was adopted on or before June 1, 2011 (Fla. Stat. § 509.032(7)). Within that constraint, municipalities may regulate safety, occupancy, parking, noise and registration, and the larger Broward cities do so actively. Repeated efforts to shift authority to the state have failed: Governor DeSantis vetoed SB 280 in June 2024 on the grounds that rental markets vary across the state and should not be governed by a single standard (Florida Politics, 2024), and the principal vacation rental bill of the 2026 session, which would have added pool safety requirements, passed the Senate unanimously but died in the House on March 13, 2026 (The Florida Senate, 2026). Local rules, enforced locally, are therefore the most reasonable planning assumption. Fort Lauderdale requires a city registration, conditional on state, county and tax registrations, at a cost of $880 per year including the first inspection, limits occupancy to two persons per legal bedroom and requires off-street parking (City of Fort Lauderdale, 2026). Hollywood charges non-owner-occupied rentals $850 to apply, $600 to renew and $400 for the initial inspection, requires a representative who is reachable at all hours and can reach the property within 60 minutes, and imposes fines of up to $5,000 per day for unlicensed operation (BNBCalc, 2026). Enforcement has historically trailed the market; when Hollywood introduced automated monitoring in 2021 it had 250 registered rentals but identified more than 4,000 advertised units (Granicus, 2021). Because the license field in Inside Airbnb's Broward data is almost entirely blank, compliance cannot be measured with our data and is noted as a limitation.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Taxes and platform fees add further friction. Guests pay approximately 13 percent on stays of six months or less, comprising the state's six percent transient rental tax, Broward's one percent discretionary sales surtax and the county's six percent tourist development tax, all of which Airbnb collects and remits for bookings on its platform (Airbnb, n.d.; Broward County, n.d.; Florida Office of Economic and Demographic Research, 2025). The project proposal lists 12 percent, which omits the county surtax. Because these taxes are paid by guests, they affect the price guests see rather than host revenue in our data. On the host side, Airbnb began charging hosts who connect through property management software a single 15.5 percent host-only fee on October 27, 2025, replacing a split arrangement in which hosts paid about three percent and guests paid 14 to 16 percent (AltexSoft, 2025). Reporting on whether and when the change applies to independent hosts who list directly is inconsistent, so Chapter 6 adopts 15.5 percent as a conservative assumption.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Finally, because most Broward listings are condominium or apartment units, conditions in the condominium market are directly relevant to a prospective entrant, and the project's housing data show that market to be soft. Zillow's typical condominium value, taken as the median across Broward ZIP codes, stood at about $220,000 in September 2026, 5 percent lower than a year earlier and 18 percent below its December 2023 peak, while values for all homes were flat and typical rents rose about 1 percent (Zillow, 2026). Recorded sales tell the same story: in the first half of 2026, Broward condominiums sold for a median of $239,000, 2 percent less than in the first half of 2025, at $228 per square foot against $235, and the number of sales fell 15 percent (Florida Department of Revenue, 2026). Miami REALTORS (2026) similarly reports about ten months of supply and a median of 74 days to contract in the second quarter. Much of the weakness stems from carrying costs. The median unit sold was built in 1979, so the typical building is old enough to fall under the milestone structural inspections and fully funded structural reserves that Florida required after the 2021 Surfside collapse, which have raised association fees and special assessments. Legislation passed in 2025 extended some deadlines and allowed associations to pause or finance reserve contributions but left the underlying obligations intact (WLRN, 2025). Financing has also become more expensive. The 30-year mortgage rate averaged 6.86 percent in September 2026, up from 6.35 percent a year earlier, and rose to 7.36 percent in October (Freddie Mac, 2026). At the September rate, principal and interest on the median condominium with 20 percent down come to about $1,250 a month, against about $800 at the September 2021 rate. As Figure 4 shows, condominium values have fallen since rates rose but not by enough to offset the higher cost of borrowing. Lower prices reduce the cost of entry, but higher fees, assessments and interest raise the cost of holding a unit, a trade-off that Chapter 6 quantifies.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Figure 4. Typical condominium value and 30-year mortgage rate, Broward County, January 2019 to September 2026",
+  false
+ ],
+ [
+  "image",
+  "/home/claude/dsba_6211/report/build/assets/ch1_4.png"
+ ],
+ [
+  "text",
+  "Normal",
+  "Note. Condominium value is the median of Zillow's condominium home value index across Broward ZIP codes. The mortgage rate is the Freddie Mac 30-year fixed rate, monthly average. Source: author's calculations from Zillow (2026) and Freddie Mac (2026).",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Taken together, the evidence describes a large, mature and increasingly professionalized market in which growth is real but widely shared. Demand has risen, but supply has risen nearly as quickly, so the typical listing is no busier than it was two years ago, and roughly one in four listings leaves the platform within nine months. The beachfront, where most listings are located, is the most crowded and the most professionalized segment and shows the weakest estimated performance, whereas inland neighborhoods one to three miles from the coast, dominated by larger homes and independent hosts, perform best. Income is concentrated in the six months from December through May, and the external environment presents identifiable risks, namely reduced low-fare air capacity after Spirit's exit and a continuing decline in Canadian winter visitors, partly offset by strong cruise growth. Buying in has become cheaper in price but more expensive to finance and to hold, with condominium values falling while mortgage rates rose above 7 percent. For the independent host this project is designed to advise, these findings suggest that the opportunity, to the extent one exists, lies away from the commoditized beachfront condominium segment, and that any projection should account for seasonality, financing costs and the substantial probability of exit as well as revenue. The chapters that follow test whether these descriptive patterns persist once listing characteristics are controlled for and whether the economics support entry for a buyer financing a property in 2026.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Several limitations should be noted. Nights and revenue are modeled from reviews rather than observed bookings and are more reliable for comparisons than for absolute levels. They also price the whole year at the September asking price, and September is the slowest month, so annual totals such as the $289 million run low; Chapter 6 scales prices to a full-year level, about 11 to 14 percent higher. The review history omits listings that left before December 2025, which overstates long-run growth. The calendar cannot distinguish booked from blocked nights. Inside Airbnb covers only Airbnb, so listings on Vrbo and other platforms are excluded. Distances to the beach are approximate to within a few hundred meters. Zillow figures are medians across ZIP codes rather than weighted by the number of homes, and the sales records carry no bedroom counts, so they describe the condominium market as a whole rather than the units most often listed on Airbnb. Finally, several external figures, particularly those on hotel and World Cup performance, are drawn from press reports of CoStar and AirDNA data rather than from the providers directly, and some refer to Miami-Dade rather than Broward.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "References",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Airbnb. (n.d.). Occupancy tax collection and remittance by Airbnb in Florida. Airbnb Help Center. https://www.airbnb.com/help/article/2301",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Airbnb. (2026, February 11). $410 million in tourism taxes generated for communities in Florida. Airbnb Newsroom. https://news.airbnb.com/410-million-in-tourism-taxes-generated-for-communities-in-florida/",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Albany CEO. (2025, December 18). 2026 will be the best year to invest in short-term rentals since 2021, new AirDNA report finds. https://albanyceo.com/news/2025/12/2026-will-be-best-year-invest-short-term-rentals-2021-new-airdna-report-finds",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "AltexSoft. (2025). Airbnb to move hosts to 15.5% host-only single fee. https://www.altexsoft.com/travel-industry-news/airbnb-to-move-hosts-to-15-5-host-only-single-fee/",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Aviation Week. (2026, May). Spirit Airlines shuts down after rescue talks collapse. https://aviationweek.com/air-transport/airlines-lessors/spirit-airlines-shuts-down-after-rescue-talks-collapse",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Axios Fort Lauderdale. (2026, July 20). World Cup fuels Broward's summer business and hotel boom. https://www.axios.com/local/fort-lauderdale/2026/07/20/world-cup-browards-summer-business-hotel-boom",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "BNBCalc. (2026). Hollywood, Florida short-term rental regulation guide. https://www.bnbcalc.com/blog/short-term-rental-regulation/Hollywood-Florida-guide",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Broward County. (n.d.). Tourist development tax. Records, Taxes and Treasury Division. https://broward.org/RECORDSTAXESTREASURY/TAXESFEES/Pages/TouristDevelopmentTaxes.aspx",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Broward County Aviation Department. (2026a). FLL historic airport traffic, 2015–2025. https://www.broward.org/Airport/Business/about/Documents/FLLhistoricairporttraffic2025.pdf",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Broward County Aviation Department. (2026b). FLL passenger statistics, May 2026. https://www.broward.org/Airport/Business/about/Documents/FLLstats_may2026.pdf",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "City of Fort Lauderdale. (2026). Vacation rental registration. https://www.fortlauderdale.gov/Government/Departments/Community-Services/Community-Enhancement-and-Compliance/Administrative-Services/Vacation-Rental-Program/Vacation-Rental-Registration",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Cruise Industry News. (2025, December). Port Everglades celebrates record fiscal year. https://cruiseindustrynews.com/cruise-news/2025/12/port-everglades-celebrates-record-fiscal-year/",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Fla. Stat. § 509.032(7). Public lodging establishments; preemption of vacation rental regulation. http://www.leg.state.fl.us/statutes/index.cfm?App_mode=Display_Statute&URL=0500-0599/0509/Sections/0509.032.html",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Florida Department of Revenue. (2026). Broward County property sales, 2025–2026, from the name-address-legal and sales data files [Data set]. https://floridarevenue.com/property/dataportal/",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Florida Office of Economic and Demographic Research. (2025). Local discretionary sales surtax rates, 2025–26. https://edr.state.fl.us/content/local-government/data/county-municipal/LDSS25-26R1.pdf",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Florida Politics. (2024, June). Controversial vacation rentals bill vetoed by Gov. Ron DeSantis. https://floridapolitics.com/archives/681863-controversial-vacation-rentals-bill-vetoed-by-gov-ron-desantis/",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Freddie Mac. (2026). Primary Mortgage Market Survey: 30-year fixed-rate mortgage average [Data set]. https://www.freddiemac.com/pmms",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Granicus. (2021, May 18). Granicus and Hollywood, FL announce partnership to manage vacation rental compliance. https://granicus.com/press-release/granicus-and-hollywood-fl-announce-partnership-to-manage-vacation-rental-compliance-improve-resident-experience/",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Hotel Online. (2017, May 13). Broward County poised for biggest new hotel boom in past decade. https://www.hotel-online.com/news/broward-county-poised-for-biggest-new-hotel-boom-in-years",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Hotel Online. (2026a, July). During World Cup, Miami Airbnb, Vrbo hosts cashed in thanks to rate hikes. https://www.hotel-online.com/news/during-world-cup-miami-airbnb-vrbo-hosts-cashed-in-thanks-to-rate-hikes",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Hotel Online. (2026b, July 25). Miami-area hotels' World Cup expectations unfulfilled. https://www.hotel-online.com/news/miami-area-hotels-world-cup-expectations-unfulfilled-id-take-the-super-bowl",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Inside Airbnb. (2026a). Broward County, Florida: Listings, calendar and reviews [Data sets, snapshots of December 28, 2025; March 30, June 29 and September 22, 2026]. https://insideairbnb.com/get-the-data/",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Inside Airbnb. (2026b). Data assumptions. https://insideairbnb.com/data-assumptions/",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Miami REALTORS. (2026). Broward County townhouses and condos, Q2 2026 local residential market metrics. https://www.miamirealtors.com/wp-content/uploads/bsk-pdf-manager/2026/07/City_Broward-County_Townhouses-and-Condos_2026-Q2_Local-Residential-Market-Metrics.pdf",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "The Florida Senate. (2026). CS/CS/SB 658: Water safety requirements for the rental of residential and vacation properties. https://www.flsenate.gov/Session/Bill/2026/658",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "The Real Deal. (2026, July 21). “Good, not great”: World Cup hype falls short for South Florida hospitality industry. https://therealdeal.com/miami/2026/07/21/world-cup-in-miami-had-minimal-impact-on-hotels-restaurants/",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Visit Lauderdale. (2025). Strategy plan FY25–26. https://assets.simpleviewinc.com/simpleview/image/upload/v1/clients/ftlauderdale/Strategy_Plan_FY25_26_e0415ae1-c3e4-4895-81a7-74038cbd3643.pdf",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Visit Lauderdale. (2026a, April 1). Tourism fuels Broward County's economy with strong start to 2026. https://www.visitlauderdale.com/media/press-releases-and-resources/post/tourism-fuels-broward-countys-economy-with-strong-start-to-2026/",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Visit Lauderdale. (2026b, January 16). Visit Lauderdale spotlights “Never Lose Your Splash” 2026 plans at annual marketing luncheon. https://www.visitlauderdale.com/media/press-releases-and-resources/post/visit-lauderdale-spotlights-never-lose-your-splash-2026-plans-at-annual-marketing-luncheon/",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "WLRN. (2025, May 4). Florida legislators revamp condo law. Will it stabilize South Florida's condo market? https://www.wlrn.org/south-florida/2025-05-04/florida-legislators-revamp-condo-law-will-it-stabilize-south-floridas-condo-market",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "WLRN. (2026a, February 23). Tourism turns up with hope of busy spring break and World Cup seasons. https://www.wlrn.org/business/2026-02-23/tourism-miami-spring-break-world-cup",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "WLRN. (2026b, October 1). Trade tensions mean fewer Canadians flocking to South Florida. https://www.wlrn.org/business/2026-10-01/trade-tensions-mean-fewer-canadians-flocking-to-south-florida",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Yahoo News. (2026, February 7). Florida airport sees a slowdown after years of growth. Why? https://www.yahoo.com/news/articles/florida-airport-sees-slowdown-years-130000539.html",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Zillow. (2026). Zillow Home Value Index and Zillow Observed Rent Index by ZIP code [Data sets]. https://www.zillow.com/research/data/",
+  false
+ ]
+]

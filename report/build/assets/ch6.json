@@ -1,0 +1,472 @@
+[
+ [
+  "text",
+  "Heading 1",
+  "Ch 6: Is It Worth Starting? Newcomer Break Even in Broward",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Oct 30, 2026 · @Chris · revised Nov 17, 2026 (full-year prices, HUD lease rents)",
+  false
+ ],
+ [
+  "text",
+  "Heading 2",
+  "Summary",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "**My answer is no. For a typical buyer with a mortgage, a Broward Airbnb does not pay for itself in 2026.** At the September 2026 rate of 6.86% with 20% down, I found that the median established listing falls short every month, and that is before any HOA, cleaning, utilities or repairs:",
+  false
+ ],
+ [
+  "table",
+  [
+   [
+    "Property",
+    "Typical price",
+    "Short each month at median revenue",
+    "Established listings that cover costs"
+   ],
+   [
+    "1BR condo",
+    "$245K",
+    "about $980",
+    "25%"
+   ],
+   [
+    "2BR condo",
+    "$405K",
+    "about $2,060",
+    "22%"
+   ],
+   [
+    "3BR house",
+    "$547K",
+    "about $1,530",
+    "24%"
+   ]
+  ]
+ ],
+ [
+  "text",
+  "Normal",
+  "Newcomers do even worse than these survivors. Of the listings that had no reviews yet in December 2025, only 24% were earning nine months later. Hurricane risk adds about $570 a month to a house, and for a condo it sits inside the HOA. On top of that, the slow season lands right in the peak of hurricane season, with September running 26% below average.",
+  false
+ ],
+ [
+  "text",
+  "Heading 2",
+  "Why it matters",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "I wrote this chapter to turn the project into a decision for our client: someone deciding whether to buy their first vacation rental in Broward. Chapters 1 to 5 describe the market. Here I ask whether a newcomer should get into it at all.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "In Florida, I think the answer depends on hurricanes more than it would almost anywhere else. Storm risk doesn't show up once; it shows up in the monthly bills:",
+  false
+ ],
+ [
+  "text",
+  "List Paragraph",
+  "**Insurance:** a Florida condo unit policy costs about $1,035 a year, the highest of any state and twice the US average. Houses need wind cover plus separate flood cover.",
+  true
+ ],
+ [
+  "text",
+  "List Paragraph",
+  "**Deductibles:** hurricane deductibles usually run 2% to 5% of the home's value, and the owner pays that before insurance pays anything.",
+  true
+ ],
+ [
+  "text",
+  "List Paragraph",
+  "**HOA fees:** condo associations insure the building against wind and flood. Since the laws passed after the Surfside collapse, they also have to fully fund structural reserves, which has pushed fees and special assessments up.",
+  true
+ ],
+ [
+  "text",
+  "List Paragraph",
+  "**Revenue:** hurricane season, June through November, is also Broward's slowest stretch for bookings.",
+  true
+ ],
+ [
+  "text",
+  "Normal",
+  "If a newcomer budgets only for the mortgage and taxes, they'll underestimate what the property really costs, and they'll hit their slowest months exactly when a storm is most likely.",
+  false
+ ],
+ [
+  "text",
+  "Heading 2",
+  "Data used",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "I used five of the team's processed files, built by src/build_dataset.py, plus cost rates I looked up in 2026 sources.",
+  false
+ ],
+ [
+  "table",
+  [
+   [
+    "File",
+    "What it gave me"
+   ],
+   [
+    "listings_panel.parquet",
+    "September 2026 listings (analysis_ready == 1, whole homes) for revenue, nights and nightly price; December 2025 listings tracked to September for the newcomer's odds"
+   ],
+   [
+    "zillow_zip_monthly.parquet",
+    "September 2026 typical home value by ZIP (1BR, 3BR, condo, all homes) and typical rent (zori_rent)"
+   ],
+   [
+    "mortgage_rate_monthly.parquet",
+    "Freddie Mac 30 year rate, September 2026 average: 6.86%"
+   ],
+   [
+    "dor_sales.parquet",
+    "Actual home sales, to check the Zillow prices and to work out assessed value as a share of price (91%)"
+   ],
+   [
+    "reviews.parquet",
+    "Review dates from 2023 to 2025, to measure seasonality"
+   ]
+  ]
+ ],
+ [
+  "table",
+  [
+   [
+    "Cited rate",
+    "Value",
+    "Source"
+   ],
+   [
+    "Property tax",
+    "19.84 mills (Broward 2025/26 average)",
+    ""
+   ],
+   [
+    "House insurance",
+    "$6.90 per $1,000 of value (Citizens Broward average $2,916)",
+    ""
+   ],
+   [
+    "Condo unit insurance",
+    "$1,035 a year (Florida)",
+    ""
+   ],
+   [
+    "Flood insurance",
+    "$943 a year (Broward)",
+    ""
+   ],
+   [
+    "Hurricane frequency",
+    "one within 50 nautical miles every 5 to 7 years",
+    ""
+   ],
+   [
+    "Condo HOA",
+    "$440 low rise, $847 average (Miami Dade, 2025)",
+    ""
+   ],
+   [
+    "High rise HOA",
+    "about $1,800, of which $438 is insurance (Fort Lauderdale and Palm Beach)",
+    ""
+   ],
+   [
+    "Airbnb host fee, registration",
+    "15.5%; $880 a year",
+    "team proposal"
+   ]
+  ]
+ ],
+ [
+  "text",
+  "Heading 2",
+  "How I got there",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "I built a break even model: what a property costs each month against what a comparable Airbnb earns. I followed the Ch 6 rules in the team's data decisions log.",
+  false
+ ],
+ [
+  "text",
+  "List Paragraph",
+  "**I picked three starter properties.** A 1BR condo, a 2BR condo and a 3BR house. I matched each one to September 2026 whole home listings with the same number of bedrooms and the same building type, 8,028 listings in all.",
+  true
+ ],
+ [
+  "text",
+  "List Paragraph",
+  "**I priced each comparable listing in its own ZIP.** I used Zillow's typical value for that ZIP and type, so a beach listing's revenue is paired with a beach price. For the 2BR condo I used Zillow's condo series, because its 2BR series mixes in houses. The condo price ($405K) matched actual condo sales in the same ZIPs ($405K, median 1,140 sq ft).",
+  true
+ ],
+ [
+  "text",
+  "List Paragraph",
+  "**I added up the yearly costs.** Mortgage (30 years at 6.86%, 20% down), property tax (19.84 mills on 91% of the price, with no homestead exemption), insurance with a 25% markup for short term renting, flood cover for houses, the $880 registration, and a hurricane reserve. For that reserve I assumed one storm every 6 years, a 2% deductible paid on half of them, and 14 nights of bookings lost per storm.",
+  true
+ ],
+ [
+  "text",
+  "List Paragraph",
+  "**I compared that with revenue in two ways.** First, if you last a year: the 25th, 50th and 75th percentile revenue of established listings, after Airbnb's 15.5% fee. Inside Airbnb prices a year of bookings at the scrape day's price, and September is the slowest month, so I scaled each type's revenue to a full-year price level using the same listings' prices in March, June and September (x1.11 for the 1BR condo, x1.14 for the 2BR condo and x1.11 for the house). Second, the newcomer's odds: where the new listings from December 2025 were nine months later.",
+  true
+ ],
+ [
+  "text",
+  "List Paragraph",
+  "**I reported what's left each month** for HOA, cleaning, utilities and repairs, and the number of booked nights a year needed to break even.",
+  true
+ ],
+ [
+  "text",
+  "List Paragraph",
+  "**I compared it with a 12 month lease** at HUD's 2026 Broward rent for that bedroom count (1BR $1,900, 2BR $2,333, 3BR $3,216), adjusted to each ZIP with Zillow's rent index, allowing for 5% vacancy and an 8% management fee.",
+  true
+ ],
+ [
+  "text",
+  "List Paragraph",
+  "**I tested the assumptions** one at a time: the rate, the down payment, insurance, storm frequency, bookings, and buying in cash.",
+  true
+ ],
+ [
+  "text",
+  "Normal",
+  "One caveat on revenue: it's Inside Airbnb's estimate, nightly price times nights, with nights worked out from review counts. It assumes half of guests leave a review, so real revenue may be higher, which is why I tested bookings at 1.5x and 2x in step 7. I left out World Cup income, as the proposal asks.",
+  false
+ ],
+ [
+  "text",
+  "Heading 2",
+  "Findings",
+  false
+ ],
+ [
+  "text",
+  "Heading 3",
+  "1. Costs are higher than what a typical established listing earns",
+  false
+ ],
+ [
+  "image",
+  "/home/claude/dsba_6211/report/build/assets/ch6_1.png"
+ ],
+ [
+  "text",
+  "Normal",
+  "The mortgage alone is bigger than the median listing's revenue for all three types. Only 22% to 25% of established listings cover their costs, even when I pair each one with its own ZIP's price. Prices don't help either: Zillow values were flat or down over the past year, with 1BR condos down about 4%.",
+  false
+ ],
+ [
+  "text",
+  "Heading 3",
+  "2. Condos can't afford any HOA",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "The plan for this chapter was to say \"only buy if the HOA is under X dollars.\" For condos, X turns out to be below zero even at the 75th percentile of revenue: a 1BR comes up about $50 short each month and a 2BR about $620 short, before any HOA at all. Real Broward HOAs run from $440 in low rise buildings to over $1,800 in beach high rises. Only about 17% to 18% of established condo listings leave more than $440 a month.",
+  false
+ ],
+ [
+  "text",
+  "Heading 3",
+  "3. Where the hurricane cost sits",
+  false
+ ],
+ [
+  "text",
+  "List Paragraph",
+  "**House:** insurance with the rental markup, flood cover and the storm reserve add up to about $570 a month, 13% of costs. If insurers raise rates 50% after a storm, that's another $200 a month.",
+  true
+ ],
+ [
+  "text",
+  "List Paragraph",
+  "**Condo:** the owner's own policy is only about $110 a month, but the HOA pays for the building's wind and flood insurance ($438 a month in Fort Lauderdale high rises) plus reserves. When I count that one line, 16% to 24% of a condo owner's costs come from hurricane risk.",
+  true
+ ],
+ [
+  "text",
+  "Heading 3",
+  "4. Breaking even takes 129 to 153 booked nights a year",
+  false
+ ],
+ [
+  "image",
+  "/home/claude/dsba_6211/report/build/assets/ch6_2.png"
+ ],
+ [
+  "text",
+  "Normal",
+  "That's 35% to 42% occupancy before any HOA. With a $440 HOA, a condo needs 151 to 160 nights. Established listings book a median of 36 to 96 nights, and only 21% to 29% reach the break even point.",
+  false
+ ],
+ [
+  "text",
+  "Heading 3",
+  "5. Newcomers do worse than the survivors",
+  false
+ ],
+ [
+  "image",
+  "/home/claude/dsba_6211/report/build/assets/ch6_3.png"
+ ],
+ [
+  "text",
+  "Normal",
+  "About a third of new listings had left Airbnb nine months later, compared with a fifth of established ones. Among listings with no reviews yet, only 24% were earning. The first year listings that stayed earned as much as established ones, or more. I read that as survivorship: the weak ones are the ones that left, which is why established listings make a newcomer's prospects look better than they are.",
+  false
+ ],
+ [
+  "text",
+  "Heading 3",
+  "6. Hurricane season is the slow season",
+  false
+ ],
+ [
+  "image",
+  "/home/claude/dsba_6211/report/build/assets/ch6_4.png"
+ ],
+ [
+  "text",
+  "Normal",
+  "From June to November, bookings (traced through reviews) run at 90% of the yearly average, against 110% from December to May. September, the peak of hurricane season, is the weakest month at 74. So the storm risk and the lowest revenue arrive at the same time.",
+  false
+ ],
+ [
+  "text",
+  "Heading 3",
+  "7. For a condo, a 12 month lease does as well as a top Airbnb",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "If you rent the same properties on a 12 month lease at HUD's rents, the 1BR condo about breaks even before HOA (+$20 a month), the 2BR condo comes up $640 short and the house $1,370 short. A median Airbnb does worse than that for all three types. An Airbnb in the top quarter only matches the lease for condos (about $70 worse for the 1BR, $20 better for the 2BR), but beats it by about $1,630 a month for the house, before its extra utilities, supplies and furnishing. So for a condo, running an Airbnb adds work without adding income; the house is the one type where running it well pays off.",
+  false
+ ],
+ [
+  "text",
+  "Heading 3",
+  "8. What would make it work",
+  false
+ ],
+ [
+  "image",
+  "/home/claude/dsba_6211/report/build/assets/ch6_5.png"
+ ],
+ [
+  "text",
+  "Normal",
+  "A lower rate or 25% down barely moves the needle ($80 to $250 a month better). Paying cash turns all three positive before HOA (the house $1,340 left over, the 1BR condo $310 and the 2BR condo $65). Bookings at twice the estimate make the house positive, but not the condos. At 75th percentile revenue with a $440 HOA, a condo only pays for itself if you buy it at 61% (2BR) to 71% (1BR) of Zillow's typical price. A house at 75th percentile revenue covers its costs at the typical price.",
+  false
+ ],
+ [
+  "text",
+  "Heading 2",
+  "Recommendation",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "My advice to the client: don't buy a Broward property to run as an Airbnb with a mortgage in 2026, unless all three of these are true:",
+  false
+ ],
+ [
+  "text",
+  "List Paragraph",
+  "You can realistically run a listing in the top quarter. A top-quarter 3BR house covers its costs (about $270 a month left before repairs); a top-quarter condo does no better than a plain 12 month lease.",
+  true
+ ],
+ [
+  "text",
+  "List Paragraph",
+  "For a condo, you can pay cash or buy well below Zillow's typical price for the ZIP (around 61% to 71% of it).",
+  true
+ ],
+ [
+  "text",
+  "List Paragraph",
+  "You have a cash cushion for what this model leaves out: HOA, cleaning, utilities and repairs.",
+  true
+ ],
+ [
+  "text",
+  "Normal",
+  "For a condo, I'd get the building's HOA budget, insurance line and reserve study before anything else, because a beach high rise HOA on its own is bigger than what a median listing earns. I'd also plan for the September slump and keep enough cash for one hurricane deductible: 2% of the value, about $11,000 on a $547K house.",
+  false
+ ],
+ [
+  "text",
+  "Heading 2",
+  "Limits and how to reproduce this",
+  false
+ ],
+ [
+  "text",
+  "List Paragraph",
+  "**Revenue is an estimate** from reviews, capped at 255 nights a year. Even at twice the estimated bookings, both condos still come up short.",
+  true
+ ],
+ [
+  "text",
+  "List Paragraph",
+  "**I don't have HOA fees or insurance quotes for each property.** The insurance figures are county or state averages, so my answer is a threshold rather than a number for a specific building.",
+  true
+ ],
+ [
+  "text",
+  "List Paragraph",
+  "**I don't have the flood zone for each property.** I used the Broward average for flood cover; beach properties in AE and VE zones pay much more.",
+  true
+ ],
+ [
+  "text",
+  "List Paragraph",
+  "**Some inputs are my own assumptions:** the 25% insurance markup for short term renting, how often storms hit, the share of storms that cost a deductible, and 14 nights of downtime. I tested each one in the sensitivity analysis. A direct hit could cost far more than the average reserve.",
+  true
+ ],
+ [
+  "text",
+  "List Paragraph",
+  "**Long term rent** is HUD's county rent for the bedroom count (a 40th percentile rent) adjusted by the ZIP's Zillow rent index, not a quote for a specific unit.",
+  true
+ ],
+ [
+  "text",
+  "List Paragraph",
+  "**Listings that left** may have switched to a 12 month lease or been sold, not failed.",
+  true
+ ],
+ [
+  "text",
+  "Normal",
+  "Every number in this report comes from notebooks/06_newcomer_feasibility.ipynb. It runs as is from the notebooks/ folder once the processed files are in data/processed/ and the packages from uv sync are installed, and it saves its figures to notebooks/figures/ch6/.",
+  false
+ ]
+]

@@ -64,6 +64,9 @@ def new_document():
     for lst in ("List Bullet", "List Number"):
         _set_font(st[lst], 11)
         st[lst].paragraph_format.space_after = Pt(4)
+    # the default template's <w:zoom> lacks the required percent attribute
+    z = doc.settings.element.find(qn("w:zoom"))
+    if z is not None: z.set(qn("w:percent"), "100")
     # page numbers in the footer
     p = sec.footer.paragraphs[0]
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -165,7 +168,9 @@ def render(doc, blocks, base_dir="."):
                 for j, c in enumerate(row.cells):
                     c.paragraphs[0].paragraph_format.space_after = Pt(1)
                     c.paragraphs[0].paragraph_format.line_spacing = 1.0
-                    if j > 0: c.paragraphs[0].alignment = WD_ALIGN_PARAGRAPH.CENTER
+                    # center short values (numbers); leave sentences left-aligned
+                    if j > 0 and max(len(r.cells[j].text) for r in t.rows) <= 28:
+                        c.paragraphs[0].alignment = WD_ALIGN_PARAGRAPH.CENTER
                     if widths: c.width = Inches(widths[j])
             if widths:
                 grid = t._tbl.tblGrid
@@ -181,6 +186,23 @@ def render(doc, blocks, base_dir="."):
                 p = doc.add_paragraph(); add_rich(p, r, size=10)
                 p.paragraph_format.left_indent = Inches(0.5); p.paragraph_format.first_line_indent = Inches(-0.5)
                 p.paragraph_format.space_after = Pt(4)
+        elif kind == "cover":
+            d = b[1]
+            for _ in range(6):
+                doc.add_paragraph()
+            p = doc.add_paragraph(style="Title"); add_rich(p, d["title"])
+            p = doc.add_paragraph(); add_rich(p, d["subtitle"], size=13, color=MUTED)
+            p.paragraph_format.space_after = Pt(36)
+            for line in d["lines"]:
+                p = doc.add_paragraph(); add_rich(p, line, size=11.5)
+                p.paragraph_format.space_after = Pt(2)
+        elif kind == "contents":
+            for title, sub in b[1]:
+                p = doc.add_paragraph(); add_rich(p, f"**{title}**")
+                if sub:
+                    p.add_run("\n")
+                    add_rich(p, sub, size=10, color=MUTED)
+                p.paragraph_format.space_after = Pt(6)
         elif kind == "pagebreak":
             doc.add_paragraph().add_run().add_break(WD_BREAK.PAGE)
         else:
