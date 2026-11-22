@@ -13,6 +13,8 @@ concurrency:
   cancel-in-progress: true
 jobs:
   build:
+    # the live dashboard is served from Tim's fork; the team repo has Pages turned off
+    if: github.repository == 'timagonch/DSBA_6211'
     runs-on: ubuntu-latest
     defaults:
       run:
