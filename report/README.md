@@ -1,6 +1,6 @@
 # Report chapters and the Nov 17 review
 
-The Word write-ups for each chapter. Chapters 1, 2+4 and 6 are corrected copies of the versions in the shared Drive folder; the changes are listed below. Chapter 3 is unchanged. Chapter 5 is in `notebooks/05_world_cup.ipynb`.
+The Word write-ups for each chapter. Chapters 1, 2+4 and 6 are corrected copies of the versions in the shared Drive folder; the changes are listed below. Chapter 3 is unchanged. Chapter 5 (World Cup) was written on Nov 22 from `notebooks/05_world_cup.ipynb`; `build/` holds the scripts that generate it and the combined report.
 
 ## How we checked
 
