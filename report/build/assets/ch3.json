@@ -1,0 +1,182 @@
+[
+ [
+  "text",
+  "Normal",
+  "Matthew Sweeney",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "DSBA 6211, Broward Airbnb Group Project",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "November 16, 2026",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Chapter 3: What Guests Say About Broward County Airbnb Stays",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "This chapter examines what guests say in written reviews of Airbnb listings in Broward County and whether feedback differs between independent hosts and larger professional operators. While Chapters 2 and 4 focus on Airbnb listings and their performance, this chapter uses customer reviews to better understand the guest experience. The analysis asks two questions: how favorable is the language of guest reviews, and which features of the stay receive the most attention? It also tests whether the apparent difference between host types persists when each property, rather than each review, receives equal weight.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "The analysis uses the team’s cleaned Inside Airbnb data, including 835,772 deduplicated review records and a panel of 61,543 listing-snapshot rows (Inside Airbnb, 2026). Reviews were limited to those classified as English, containing more than three words, and dated from January 1, 2024 through August 31, 2026. This produced 399,691 qualifying comments, or 47.8 percent of the review file. The English-language indicator is estimated from the text, not supplied by reviewers, and the source data include reviews only for properties found in one of the team’s late-2025 or 2026 snapshots. The resulting sample is therefore not a complete record of all historical Broward Airbnb stays.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "To quantify the tone of each comment, I used VADER (Valence Aware Dictionary and sEntiment Reasoner), a lexicon- and rule-based method intended for relatively informal text (Hutto & Gilbert, 2014). VADER assigns a compound sentiment score from −1 to +1; scores of 0.05 or higher were classified as positive, −0.05 or lower as negative, and intermediate scores as neutral. Unlike a trained classifier, this approach does not require manually labeled reviews, making it practical for nearly 400,000 comments. The method is transparent and reproducible, but a high compound score is not the same as a verified positive guest experience, particularly when a review contains praise and a specific complaint.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Across the qualifying sample, VADER classified 382,845 reviews as positive (95.79 percent), 10,542 as negative (2.64 percent), and 6,304 as neutral (1.58 percent). Mean compound sentiment was 0.794. This strongly positive distribution reflects both the tone of published Airbnb reviews and the behavior of the automated scoring method; it should not be read as a measured 95.79 percent satisfaction rate. In a small qualitative check, one clearly enthusiastic review was assigned a negative score, illustrating that rule-based sentiment can miss context and unconventional phrasing.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "The results show noticeable differences in guest sentiment across the three host categories. Among reviews with a known host tier, single-listing operators averaged 0.826 on the VADER scale, small operators with two to nine listings averaged 0.805, and professional operators with ten or more listings averaged 0.768. Negative classifications accounted for 1.68, 2.22, and 3.50 percent of reviews in the three groups, respectively. Host tiers come from each property’s latest complete listing snapshot rather than its status on the date the review was posted; 94 qualifying reviews had no assigned tier. These comparisons describe the language of reviews, not the causal effect of host size.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "To prevent high-volume listings from determining the overall result, I calculated each listing’s mean sentiment and then compared listings equally, retaining properties with at least five qualifying reviews. The resulting 11,812-listing sample again ranked single-listing hosts highest (0.819), small hosts next (0.800), and professionals lowest (0.758). The single-versus-professional difference was 0.061 compound-score points. Figure 1 displays this property-weighted comparison. While the consistency between review-level and listing-level comparisons makes the result more credible as a descriptive pattern, the five-review cutoff excludes newer and rarely reviewed properties, and the groups differ in location, room type and property characteristics.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Figure 1. Average guest review sentiment by host type, listings with at least five qualifying reviews",
+  false
+ ],
+ [
+  "image",
+  "/home/claude/dsba_6211/report/build/assets/ch3_1.png"
+ ],
+ [
+  "text",
+  "Normal",
+  "**Note. Each eligible listing receives equal weight; VADER scores range from −1 to +1. Source: author’s calculations from the team’s Inside Airbnb review file.**",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "A second analysis identifies what guests discuss rather than simply whether the review sounds positive. Five predefined keyword sets were applied to the comments: communication, location, cleanliness, amenities and value. This is a dictionary-based topic screen, not an unsupervised topic model. Words such as “host” or “pool” are counted regardless of whether the guest is praising or criticizing them. These topics help identify what guests frequently discuss, but they don’t necessarily explain why someone had a positive or negative experience.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "As Figure 2 shows, communication-related terms appear in 39.36 percent of qualifying reviews (157,325), followed closely by location terms at 38.60 percent (154,300). Cleanliness appears in 30.90 percent (123,516), amenities in 25.12 percent (100,396), and value in 5.19 percent (20,736). The comparatively low value share is partly a property of the chosen keyword dictionary: a guest can discuss whether a stay was worth the price without using the selected terms. Nevertheless, communication, location, cleanliness and amenities clearly emerge as useful dimensions for closer review.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Figure 2. Most frequently mentioned topics in Broward Airbnb reviews",
+  false
+ ],
+ [
+  "image",
+  "/home/claude/dsba_6211/report/build/assets/ch3_2.png"
+ ],
+ [
+  "text",
+  "Normal",
+  "**Note. Percentage of the 399,691 qualifying reviews containing at least one keyword in each category; one review may count in several categories. Source: author’s calculations from Inside Airbnb (2026).**",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Restricting the same topic screen to the 10,542 VADER-negative comments changes the ranking. Amenity-related terms appear in 5,077 negative reviews (48.16 percent), communication in 4,114 (39.02 percent), cleanliness in 3,558 (33.75 percent), location in 2,562 (24.30 percent), and value in 1,236 (11.72 percent). These figures count topics appearing in negative reviews; they do not prove that each mentioned amenity or host interaction caused dissatisfaction. I also examined a random sample of 15 negative reviews to better understand the types of complaints guests reported. Examples mention dirty rooms and windows, damaged fixtures, broken air conditioning, missing supplies, misleading descriptions, unexpected parking fees, difficult access and unresponsive hosts. Other reviews mix praise with criticism, reinforcing the need to distinguish a complaint about a particular feature from the overall tone of a stay.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Monthly sentiment was also examined for January 2025 through August 2026. The narrower period reduces the most severe problems created by older review histories, which omit properties that left the platform before the source snapshots; September 2026 was excluded because of incomplete review coverage. Overall monthly mean sentiment varied modestly, from approximately 0.771 in December 2025 to 0.801 in April 2025, without a clear sustained increase or decline. The monthly negative-review share was 3.46 percent in December 2025, compared with 2.79 percent in January 2025. These fluctuations alone do not establish a seasonal effect or an effect of major events.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "The monthly comparison by host tier, shown in Figure 3, is more consistent than the overall trend: single-listing hosts have the highest average sentiment and professional operators the lowest in each of the twenty plotted months. A simple unweighted average of those twenty monthly means is 0.825 for single-listing operators, 0.802 for small operators and 0.763 for professional operators. These are averages of monthly review-level means, not the same statistic as the equal-property-weighted values in Figure 1. Changes in which properties receive reviews from month to month may also contribute to the gaps.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Figure 3. Monthly average guest sentiment by host type, January 2025 to August 2026",
+  false
+ ],
+ [
+  "image",
+  "/home/claude/dsba_6211/report/build/assets/ch3_3.png"
+ ],
+ [
+  "text",
+  "Normal",
+  "**Note. Mean VADER scores are** **weighted** **equally across reviews within each host tier and month. Host tier is assigned from the latest listing snapshot, not reconstructed historically. Source: author’s calculations from Inside Airbnb (2026).**",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "As a cross-check, I joined property-level sentiment to Airbnb’s published overall listing rating from the September 22, 2026 snapshot. Among 9,511 matched listings with at least five qualifying reviews and a nonmissing rating, Pearson’s correlation coefficient was 0.689. Properties with more favorable written comments thus tend to carry higher average star ratings. This positive association provides a useful consistency check, not proof that VADER scores each review correctly. The platform publishes a listing-level rating rather than a star score for each individual comment, and the rating may include reviews outside the dates used here.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Overall, the results suggest that independent Airbnb hosts can compete with larger professional operators when it comes to guest satisfaction, based on the customer reviews analyzed. The advantage for single-listing hosts is visible in both review-weighted and property-weighted summaries and remains present across the recent monthly series. At the same time, the results should not be mistaken for a controlled estimate of management quality. Professional operators disproportionately manage different property types and locations, and guest expectations or review behavior may vary across those segments. The performance models in the group’s other chapters are therefore necessary before treating any sentiment gap as a general competitive advantage.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Beyond the sentiment scores, the customer reviews also highlight several areas where Airbnb hosts could improve the guest experience. Consistent maintenance, accurate property descriptions, clear communication, disclosure of parking or other charges, and cleanliness appear repeatedly in the negative-review sample. Further analysis would help determine how frequently these issues occur and how much they affect the overall guest experience. While these findings point to potential areas for improvement, they do not show whether addressing these issues would lead to higher ratings or increased revenue.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Several limitations remain. VADER is sensitive to wording, negation and context, while published Airbnb reviews disproportionately reflect guests who chose to leave feedback. Keyword topics are broad and can produce false positives or miss synonymous phrases. Host categories reflect a later snapshot than many of the reviews; older reviews are subject to survivorship bias. The five-review minimum and the exclusion of non-English and brief comments also affect representativeness.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "**References**",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Hutto, C. J., & Gilbert, E. (2014). VADER: A parsimonious rule-based model for sentiment analysis of social media text. Proceedings of the Eighth International AAAI Conference on Weblogs and Social Media, 8(1), 216–225.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Inside Airbnb. (2026). Broward County, Florida: Listings and reviews [Data sets, snapshots of December 2025, March 2026, June 2026 and September 2026]. https://insideairbnb.com/get-the-data/",
+  false
+ ]
+]

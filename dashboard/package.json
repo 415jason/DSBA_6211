@@ -1,0 +1,22 @@
+{
+  "name": "broward-airbnb-dashboard",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "observable preview",
+    "build": "observable build",
+    "bundle": "esbuild scripts/libs-entry.js --bundle --format=esm --minify --outfile=src/components/libs.js && esbuild scripts/map-entry.js --bundle --format=esm --minify --outfile=src/components/mapstack.js"
+  },
+  "dependencies": {
+    "@deck.gl/aggregation-layers": "^9.4.1",
+    "@deck.gl/core": "^9.4.1",
+    "@deck.gl/layers": "^9.4.1",
+    "@deck.gl/mapbox": "^9.4.1",
+    "@observablehq/framework": "^1.13.4",
+    "@observablehq/inputs": "^1.0.0",
+    "@observablehq/plot": "^0.6.19",
+    "d3": "^7.9.2",
+    "maplibre-gl": "^4.7.1"
+  },
+  "private": true,
+  "type": "module"
+}

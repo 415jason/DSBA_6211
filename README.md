@@ -18,12 +18,15 @@ Run `uv sync` again after every `git pull`: packages change (statsmodels and imb
 | `notebooks/03_reviews_text.ipynb` | Ch 3 (Matthew) |
 | `notebooks/04_performance_drivers.ipynb` | Ch 2 and 4 (Jason) |
 | `notebooks/05_world_cup.ipynb` | Ch 5 (Tim) |
-| `notebooks/06_newcomer_feasibility.ipynb` | Ch 6 |
+| `notebooks/06_newcomer_feasibility.ipynb` | Ch 6 (Chris; revised Nov 17) |
 | `src/build_dataset.py` | Cleaning and joining code |
 | `docs/data_dictionary.md` | What every file and column means. **Read this first** |
 | `docs/decisions_log.md` | Every cleaning decision and why |
 | `archive/` | First EDA on the June summary file (Jason) |
-| `notebooks/figures/ch5/` | Figures saved by the Ch 5 notebook |
+| `notebooks/figures/ch1/` ... `ch6/` | Figures (and dashboard summary files) saved by each chapter notebook |
+| `notebooks/chapter_outputs/` | Tables and figures saved by the Ch 2 and 4 notebook |
+| `report/` | Chapter write-ups (Word) and the Nov 17 review: what was checked and what changed |
+| `dashboard/` | Interactive dashboard (Observable Framework). See `dashboard/README.md` |
 | `notebooks/cache/` | Tuned models saved by notebooks so reruns are fast (not in GitHub) |
 
 ## Working rules

@@ -1,0 +1,10 @@
+,field,present,observed_n
+0,price,True,15698
+1,minimum_nights,True,15675
+2,maximum_nights,True,15675
+3,cleaning_fee,False,0
+4,security_deposit,False,0
+5,cancellation_policy,False,0
+6,instant_bookable,False,0
+7,host_identity_verified,True,15698
+8,host_has_profile_pic,True,15698

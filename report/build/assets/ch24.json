@@ -1,0 +1,463 @@
+[
+ [
+  "text",
+  "Title",
+  "**Broward Airbnb host competition and performance drivers**",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Jason Labrecque  |  DSBA 6211  |  November 14, 2026",
+  false
+ ],
+ [
+  "text",
+  "Heading 1",
+  "**Chapter 2  Do professional hosts outperform independents**",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Professional scale does not translate into a clear occupancy advantage in Broward County. Single-listing hosts look stronger than professional accounts in the raw data, but that difference nearly disappears when we compare listings with similar measured characteristics. Small hosts with two to nine listings retain a modest advantage. For an independent host, the main lesson is to benchmark against comparable properties rather than assume that either personal attention or a large portfolio guarantees better results.",
+  false
+ ],
+ [
+  "text",
+  "Heading 2",
+  "**The two performance indicators**",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "We evaluate performance using estimated occupancy and estimated annual revenue per bedroom. Occupancy measures the share of the year represented by estimated occupied nights. Revenue per bedroom allows a smaller property and a larger home to be compared on a common capacity basis. We use both because filling more nights does not necessarily produce stronger earnings per bedroom. Neither indicator measures profit or accounts for financing, cleaning, maintenance, host labor or other operating costs.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Inside Airbnb estimates occupied nights as twice the number of reviews in the last twelve months, multiplied by the larger of three nights or the advertised minimum stay, capped at 255 nights. Occupancy is this estimate divided by 365, so the maximum possible estimate is 69.9%. Estimated annual revenue equals occupied nights multiplied by the snapshot’s nightly asking price. Revenue per bedroom divides that figure by the larger of the bedroom count or one; studios therefore use one bedroom equivalent.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "These are proxies, not confirmed bookings or collected revenue. The formula assumes roughly half of guests review their stays, and the September asking price stands in for rates across the year. A zero estimate can represent a new listing or guests who did not review, as well as little actual demand. We retain zeros so the comparison does not quietly exclude listings with no observed activity.",
+  false
+ ],
+ [
+  "text",
+  "Heading 2",
+  "**Sample and host definitions**",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "The main analysis uses the September 22, 2026 snapshot: 15,698 listings in the project’s standard sample, out of 17,630 recorded listings. The sample retains bookable listings with acceptable prices and excludes identified stays of 30 nights or more. It includes 23 listings with missing minimum stays; a separate check removes them. December lacks prices, March is incomplete, and June prices reflect the World Cup, making September the main comparison rather than pooling all four snapshots.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Single hosts have one listing, small hosts have two to nine, and professional accounts have ten or more. Classification uses the larger of the account’s all-market listing count and its observed Broward count. It is an account-size definition, not a verified professional credential; one business can operate several accounts. The main results give each listing equal weight, while a sensitivity check gives each host equal weight.",
+  false
+ ],
+ [
+  "text",
+  "Heading 1",
+  "**Chapter 2  Raw differences and comparable listings**",
+  false
+ ],
+ [
+  "text",
+  "Heading 2",
+  "**The unadjusted picture favors smaller portfolios**",
+  false
+ ],
+ [
+  "table",
+  [
+   [
+    "**Host group**",
+    "**Listings**",
+    "**Mean occupancy**",
+    "**Median annual revenue per bedroom**"
+   ],
+   [
+    "Single",
+    "2,919",
+    "19.6%",
+    "$5,440"
+   ],
+   [
+    "Small 2–9",
+    "4,747",
+    "21.9%",
+    "$7,267"
+   ],
+   [
+    "Professional 10+",
+    "8,032",
+    "15.5%",
+    "$3,252"
+   ]
+  ]
+ ],
+ [
+  "text",
+  "Normal",
+  "Table 1. September standard sample, including zero estimates. Source: notebook Section 2.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Single hosts have a raw occupancy advantage of 4.16 percentage points over professionals, equivalent to about 15 estimated nights a year. Small hosts lead both groups. Zero estimated occupancy is also least common among small hosts: 20.5%, compared with 28.3% for singles and 31.5% for professionals. These differences describe the listings each group operates; they do not isolate management ability.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "The groups sell different products. Professional listings average 1.72 bedrooms and sit about 1.44 miles from the beach; single-host listings average 2.03 bedrooms and sit 3.61 miles away. Professionals advertise pools more often, while single hosts advertise free parking more often. These differences make a straight comparison of portfolio averages potentially misleading.",
+  false
+ ],
+ [
+  "text",
+  "Heading 2",
+  "**Adjustment removes the single-host occupancy advantage**",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "We fit linear regressions that first include host tier, then location and physical characteristics, and finally advertised amenities. Controls include city, room type, broad property family, bedrooms, bathrooms, guest capacity, distances to the beach, airport and stadium, and seven amenity indicators. Uncertainty is clustered by host because one account’s listings are not independent observations.",
+  false
+ ],
+ [
+  "image",
+  "/home/claude/dsba_6211/report/build/assets/ch24_1.png"
+ ],
+ [
+  "text",
+  "Caption",
+  "Figure 1. Occupancy differences relative to professional accounts before and after controls. Bars show 95% host-clustered confidence intervals. Source: notebook Section 3A and report evidence exports.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "After adjustment, the single-host gap is just +0.05 occupancy points, with a 95% interval from −1.82 to +1.92. This does not establish an advantage in either direction or prove exact equality. Small hosts retain a +2.07-point advantage, about eight estimated nights per year, with an interval from +0.15 to +3.98. Keeping small hosts separate is therefore more informative than grouping all nonprofessional accounts together.",
+  false
+ ],
+ [
+  "text",
+  "Heading 1",
+  "**Chapter 2  Revenue and the strength of the conclusion**",
+  false
+ ],
+ [
+  "text",
+  "Heading 2",
+  "**Revenue differences depend on what is being compared**",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Revenue per bedroom is highly skewed and includes many zeros, so the regression uses log(1 + annual revenue per bedroom). The adjusted single-host coefficient is −0.281, with a 95% interval from −0.570 to +0.009. The small-host coefficient is +0.373, with an interval from +0.086 to +0.659. This supports a positive small-host association on the transformed outcome, while the single-host result remains uncertain at the conventional 5% level. These coefficients are not dollar differences or percentage changes in average cash earnings.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Among listings with positive estimated occupancy, single hosts have a positive adjusted log-revenue association. That narrower result excludes the risk of having no review-derived activity. In a separate model, singles have lower adjusted odds of any such activity than professionals, with an odds ratio of 0.73. Among active listings, their occupancy advantage is about 1.37 points, but its interval crosses zero. The full sample and active-only sample answer different questions; we do not choose the more favorable one as the headline.",
+  false
+ ],
+ [
+  "text",
+  "Heading 2",
+  "**No segment establishes a consistent advantage on both indicators**",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "A second comparison matches broad market segments defined by city, room type, bedroom band and distance to the beach. We retain only segments with at least ten listings and five hosts in each group and weight them by the smaller group’s listing count. These overlapping segments cover about 60% of single-host listings and 82% of professional listings. The weighted single-minus-professional gap is about +$676 in annual revenue per bedroom and −0.40 occupancy points. This descriptive comparison again shows why revenue and occupancy should be read together.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "The notebook also screens cities and other predefined segments using host-level bootstrap intervals and correction for multiple comparisons. Some raw segments favor single hosts on both outcomes. However, none passes the notebook’s evidence rule on both indicators after controlling for measured listing differences. Hallandale Beach retains a positive adjusted occupancy association, but its revenue evidence is inconclusive. These areas are places to inspect comparable listings, not established winning markets for independents.",
+  false
+ ],
+ [
+  "text",
+  "Heading 2",
+  "**Sensitivity checks reinforce a qualified interpretation**",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "The single-host occupancy interval includes zero across the main sample restrictions, including established listings, entire homes, original bedroom values and known short minimum stays. It also includes zero when each host gets equal weight or when host size is defined using Broward-only portfolios. Small hosts retain a positive adjusted occupancy gap under all-market, Broward-only and consolidated-operator definitions. Revenue conclusions are more sensitive to sample selection and weighting.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Forward calendars provide a useful caution. After fully blocked listing-months are removed, October unavailable nights are about 25.1% for professionals and 20.0% for singles, while December is about 15.4% for professionals and 23.3% for singles. Unavailable nights can be booked or blocked by the owner, and these future months differ from the trailing-year occupancy window. They challenge a claim that single hosts always fill more nights, but cannot validate actual occupancy.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Our Chapter 2 conclusion is that portfolio size alone does not establish who wins. Small hosts show a modest adjusted advantage, while single hosts and professional accounts have no clearly established overall occupancy difference after controls. Property mix, geography and operating characteristics deserve more attention than a simple independent-versus-professional label.",
+  false
+ ],
+ [
+  "text",
+  "Heading 1",
+  "**Chapter 4  What drives listing performance**",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Chapter 4 organizes the evidence around four factor groups: property, location, fee and booking policies, and host profile. We distinguish characteristics that help predict performance from changes proven to improve it. The models identify associations in the observed market; they do not measure the return from adding an amenity, changing a policy or acquiring more listings.",
+  false
+ ],
+ [
+  "text",
+  "Heading 2",
+  "**Property characteristics and location**",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Property factors include size, capacity, room and property type, and amenities such as pools, hot tubs, free parking, dedicated workspace and waterfront access. Location is represented by city and approximate distances to the beach, airport and stadium. Together, these controls explain much of the raw occupancy difference between single and professional hosts. They also define which properties make sensible competitors for a prospective host.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "In the adjusted occupancy regression, advertised free parking is associated with +4.24 percentage points, a dedicated workspace with +2.32, and waterfront or beach access with +3.03. Pool and hot-tub indicators have negative associations of −2.69 and −4.98 points. These results do not mean removing a pool would raise bookings. Shared amenities, building class, neighborhood differences and review behavior can remain entangled with the indicators. Amenities record advertised access, not verified quality or exclusive use.",
+  false
+ ],
+ [
+  "text",
+  "Heading 2",
+  "**Prediction confirms useful signals but substantial uncertainty**",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "We compare a mean baseline, ridge regression, a shallow decision tree and a random forest. Training and testing are separated by host, with 25% of hosts held out; three-fold cross-validation within training selects the model. This prevents another listing from the same account from appearing on both sides of the test. Price, review counts, minimum stay and availability are excluded from the main predictive features because they either construct the outcome or risk leaking information about it.",
+  false
+ ],
+ [
+  "image",
+  "/home/claude/dsba_6211/report/build/assets/ch24_2.png"
+ ],
+ [
+  "text",
+  "Caption",
+  "Figure 2. Six leading permutation-importance signals for each selected random forest. Higher values indicate a larger increase in holdout error when a feature is shuffled. Occupancy error is in percentage points; revenue error is in log units. Source: notebook Section 4.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "The random forest performs best in cross-validation for both indicators. On unseen hosts, it explains about 24% of occupancy variation and 23% of log-revenue variation. Occupancy error averages 13.54 percentage points, roughly 49 nights per year, versus 17.10 for the mean baseline. Beach distance and self check-in lead occupancy importance; self check-in, city and stadium distance lead revenue importance. These are broad benchmarking models, not precise annual forecasts. Stadium distance can represent regional geography and should not be interpreted as a World Cup effect.",
+  false
+ ],
+ [
+  "text",
+  "Heading 1",
+  "**Chapter 4  Booking policies and host profile**",
+  false
+ ],
+ [
+  "text",
+  "Heading 2",
+  "**Fees and booking rules need different treatment**",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Nearly 48.0% of the standard sample permits one-night stays, 30.2% requires two nights and 12.1% requires three. Another 5.4% requires four to six nights and 4.2% requires seven to twenty-nine; 23 listings lack a minimum. The median advertised maximum is 365 nights in every group. Maximum stay describes what is permitted, not the trips guests actually book.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Minimum stay is already used to calculate estimated occupied nights. Regressing that estimate directly on minimum stay could therefore rediscover the formula rather than guest behavior. Instead, we report the rules and examine October–December calendar unavailability separately. After fully blocked months are excluded, unavailable nights range from 14.7% for seven-to-twenty-nine-night minimums to 21.9% for four-to-six-night minimums; one-night and two-night rules are 18.7% and 21.7%. The pattern is not a simple “shorter stays always win” result and remains affected by property mix, lead times and owner blocks.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Self check-in is associated with +9.81 occupancy points in the main adjusted model and is an important predictor for both outcomes. It is an operational convenience measure, not Instant Book. Listings allowing pets show a positive log-revenue association, but no clear occupancy association. These characteristics are reasonable service features to evaluate, while their coefficients should not be treated as guaranteed gains from adopting them.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "The dataset does not contain cleaning-fee amounts, security deposits, cancellation policies or Instant Book status. We cannot quantify their relationships with occupancy or revenue, and an absent fee field cannot be treated as a zero charge. The pricing analysis therefore concerns advertised nightly price, not the total guest checkout cost. Fees and booking policies remain a key factor group, but the available evidence covers only part of it.",
+  false
+ ],
+ [
+  "text",
+  "Heading 2",
+  "**Host profile captures reputation and account presentation**",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Portfolio tier is the main host-profile measure. In secondary models of 12,822 listings with observed ratings and Superhost status, a one-point higher overall rating is associated with +3.36 occupancy points, and Superhost status with +11.45 points. Both also have positive log-revenue associations. Better performance can itself produce reviews and Superhost status, so these results cannot establish that a badge causes additional demand.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "The added profile analysis finds that 96.6% of listings have verified host identities and 97.5% have a host profile picture. After the main controls, verification is associated with +7.08 occupancy points and a profile picture with +5.82; their 95% intervals are +3.73 to +10.43 and +3.74 to +7.90, respectively. Both also have positive log-revenue associations. Because the comparison groups without these features are small and may differ in account maturity or completeness, the findings are better read as profile signals than isolated treatment effects.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Host tier contributes relatively little additional predictive accuracy once the other traits are included: removing it changes holdout error by only about 0.07 occupancy points and 0.018 log-revenue units. For a host deciding where to focus attention, comparable local properties, booking convenience and service quality are more useful starting points than portfolio size alone.",
+  false
+ ],
+ [
+  "text",
+  "Heading 1",
+  "**Chapter 4  Relative pricing and the proposed sweet spot**",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "We added the proposed look-alike pricing analysis to test whether a listing’s price position is associated with estimated booked nights and guest ratings. Each eligible listing is compared with fifteen nearby matches in feature space from other host accounts, in the same city, room type and exact bedroom count. Matching uses bathrooms, capacity, location distances and amenities. Price, reviews, ratings and performance do not select the neighbors.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "The procedure finds fifteen peers for 14,681 of the 15,698 September listings. The main pricing sample contains 12,358 listings after restricting minimum stays to one through three nights and prices to 50%–200% of the peer median. This keeps the review-to-nights multiplier constant and removes extreme relative prices. Listings without sufficient comparable supply are outside this analysis, so its conclusions do not cover every property.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "We model estimated annual booked nights and observed ratings separately against log relative price and its square, retaining the physical, location, amenity and host-tier controls and adding minimum-stay categories. Revenue is not an outcome here because multiplying nights by price already creates a price–revenue relationship. The curves below compare each price position with peer-median pricing, holding the modeled characteristics constant.",
+  false
+ ],
+ [
+  "image",
+  "/home/claude/dsba_6211/report/build/assets/ch24_3.png"
+ ],
+ [
+  "text",
+  "Caption",
+  "Figure 3. Adjusted September relative-price associations. Shading shows pointwise 95% host-clustered intervals for differences from peer-median pricing. These are associations, not causal demand curves. Source: notebook Section 3G.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "A price 20% above the peer median is associated with 7.46 fewer estimated annual nights relative to the median, with a 95% interval of -8.86 to -6.05. The corresponding rating difference is +0.009 points, with an interval of +0.001 to +0.016. Ratings are observed only for reviewed listings, so that comparison uses a different subset.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "The negative booked-night association holds in March and June: the same 20% premium corresponds to about 7.5 and 8.0 fewer estimated nights. In September it remains negative within the narrower 67%–150% price range (6.0 fewer nights) and after capped observations are removed (5.0 fewer). The small positive rating difference is less than one hundredth of a point and its interval crosses zero in the narrower-range check. September’s booked-night curve declines across the observed 50%–200% range; its fitted maximum falls outside that range. Curvature is not stable across checks, so the analysis does not establish a reliable interior sweet spot.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Snapshot prices may reflect prior demand, seasonal conditions and unmeasured quality. Peer prices are useful benchmarks, but these associations cannot recommend a universal discount or premium or predict the effect of changing a listing’s rate.",
+  false
+ ],
+ [
+  "text",
+  "Heading 1",
+  "**Chapter 4  Implications and limits**",
+  false
+ ],
+ [
+  "text",
+  "Heading 2",
+  "**What an independent host can take from the evidence**",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "First, compare the same product. A beachfront condominium and an inland house serve different markets, even when both are operated by single hosts. Use city, room type, bedrooms, location and amenities to select competitors, and evaluate occupancy together with revenue per bedroom. A high revenue-per-bedroom figure can coexist with modest total income, while occupancy alone says little about pricing or costs.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Second, evaluate operational convenience and account credibility. Self check-in, parking, a workspace, verification and profile completeness are associated with performance, but their practical value depends on the property and operating cost. The evidence supports examining these features and service processes; it does not justify using regression coefficients as predicted returns on an upgrade. Reputation should be monitored as an outcome of service as well as a signal visible to guests.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Third, treat pricing and booking flexibility as decisions to test using actual operating records. The peer comparison offers a defensible reference point for nightly asking prices. It does not reveal the guest’s total checkout cost or the host’s net margin. Minimum-stay rules should be considered alongside cleaning effort, turnover costs, gaps between reservations and owner-use plans. Those tradeoffs cannot be resolved from review-derived occupancy alone.",
+  false
+ ],
+ [
+  "text",
+  "Heading 2",
+  "**What remains uncertain**",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "The central limitation is measurement. Reviews are an imperfect proxy for stays, review rates may differ by host or property type, and the 255-night ceiling compresses high performers. September’s asking price is applied to a trailing-year estimate, rather than actual prices paid. Fully blocked calendars can reflect owner use or unopened inventory. The alternative measures therefore address different windows and cannot be treated as interchangeable booking records.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Selection also matters. The standard sample excludes unpriced listings, flagged prices and identified monthly stays. Active-only and established-listing comparisons omit different groups, while the price analysis requires enough local peers and known short minimum stays. Host accounts are not necessarily independent businesses, even with account-clustered uncertainty. Approximate location, property condition, interior quality, marketing, listing completeness and management practices remain incompletely measured.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Finally, association is not causation. The data does not show what would happen to the same property if its host became professional, added a pool, changed cancellation rules or adjusted its nightly rate. The models explain only part of the variation and are tested across unseen hosts, not future years. The strongest conclusion is that measured property, location and operating differences matter more than a simple portfolio-size ranking. Whether the investment pays for itself still requires the cost and financing analysis in Chapter 6.",
+  false
+ ],
+ [
+  "text",
+  "Heading 2",
+  "**Sources and reproducibility**",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Source: executed 04_performance_drivers.ipynb, using the uploaded listings_panel and calendar_monthly parquet files. The Professor Meeting Brief of November 2 supplies the project scope and conventions. Chapters 1 and 6 provide context.",
+  false
+ ],
+ [
+  "text",
+  "Normal",
+  "Notebook Sections 1–3 document definitions, raw comparisons and regressions; added Sections 3E–3G record the four-factor audit, policy/calendar checks, profile analysis and relative-price analysis. Sections 4–6 contain prediction, segment screening and sensitivity checks. Section 7 exports the report tables and all three figures. The notebook retains the original seven-section structure and embeds outputs for the added analyses.",
+  false
+ ]
+]
